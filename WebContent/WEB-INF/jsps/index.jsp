@@ -8,5 +8,6 @@
 </head>
 <body>
 	<h1>Hello</h1>
+	<p><a href="${pageContext.request.contextPath}\feedback">Get Feedback</a></p>
 </body>
 </html>
