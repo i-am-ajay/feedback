@@ -1,7 +1,9 @@
 package com.conf.component;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Generated;
@@ -10,6 +12,7 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,6 +22,7 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.GenerationTime;
+import org.hibernate.mapping.Bag;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -35,11 +39,10 @@ public class Feedback {
 	@JoinColumn(name="emp_id")
 	private Employee employee;
 	
+	@Embedded
 	@ElementCollection
-	@CollectionTable(name="question_map")
-	@JoinColumn(name="feedback_id")
-	@Column(name="answer")
-	private Map<Integer,String> questionMap = new HashMap<>();
+	@CollectionTable(name="user_question_mapping")
+	private List<EmployeeChoice> choiceList = new ArrayList<>();
 	
 	public LocalDate getCreationDate() {
 		return creationDate;
@@ -47,11 +50,11 @@ public class Feedback {
 	public void setCreationDate(LocalDate creationDate) {
 		this.creationDate = creationDate;
 	}
-	public Map<Integer, String> getQuestionMap() {
-		return questionMap;
+	public List<EmployeeChoice> getChoiceList() {
+		return choiceList;
 	}
-	public void setQuestionMap(Map<Integer, String> questionMap) {
-		this.questionMap = questionMap;
+	public void setChoiceList(List<EmployeeChoice> choiceList) {
+		this.choiceList = choiceList;
 	}
 	public int getId(){
 		return id;

@@ -17,6 +17,7 @@ public class QuestionBank {
 	}
 	
 	public Questions getQuestion(Integer qNum) {
+		System.out.println("Question called");
 		return questionMap.get(qNum);
 	}
 	
@@ -64,7 +65,7 @@ public class QuestionBank {
 		createQuestion(31,"I am able to maintain a reasonable balance between my job and family life.", new String[]{"A","S","D"});
 		createQuestion(32,"I am satisfied with the working hours/break timings.", new String[]{"A","S","D"});
 		createQuestion(33,"I am satisfied with overall job security.", new String[]{"A","S","D"});
-		createQuestion(34,"Adequate Medical Benefits are given to employees", new String[]{"A","S","D"});
+		createQuestion(34,"Adequate Medical Benefits are given to employees.", new String[]{"A","S","D"});
 		createQuestion(35,"The various Loans and Advances give to Employees are big help to the employees.", new String[]{"A","S","D"});	
 	}
 	public Questions createQuestion(int id, String name, String ...choices) {

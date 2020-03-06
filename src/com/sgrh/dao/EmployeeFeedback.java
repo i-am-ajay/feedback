@@ -21,6 +21,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ajay.others.QuestionBank;
 import com.conf.component.Employee;
+import com.conf.component.EmployeeChoice;
 import com.conf.component.Feedback;
 import com.conf.component.Questions;
 
@@ -82,7 +83,7 @@ public class EmployeeFeedback {
 		Feedback feedback = new Feedback();
 		feedback.setCreationDate(LocalDate.now());
 		for(Integer i: QuestionBank.getInstance().getQuestionMap().keySet()) {
-			feedback.getQuestionMap().put(i, "");
+			feedback.getChoiceList().add(new EmployeeChoice(i, ""));
 		}
 		SessionFactory factory = factoryBean.getObject();
 		Session session = factory.getCurrentSession();

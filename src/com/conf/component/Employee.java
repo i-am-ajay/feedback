@@ -12,6 +12,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,7 +31,7 @@ public class Employee {
 	@Column
 	private String department;
 	
-	@OneToMany(mappedBy="employee", cascade= {CascadeType.PERSIST, CascadeType.REMOVE})
+	@OneToMany(mappedBy="employee", cascade= {CascadeType.PERSIST, CascadeType.REMOVE},fetch=FetchType.EAGER)
 	List<Feedback> feedbackList = new ArrayList<>();
 	
 	public String getEmpCode() {
@@ -57,4 +58,9 @@ public class Employee {
 	public void setFeedbackList(List<Feedback> list) {
 		this.feedbackList = list;
 	}
+	
+	public EmployeeChoice getQuestionChoice(int feedback, int questionId) {
+		return feedbackList.get(feedback).getChoiceList().get(questionId);
+	}
+	
 }
