@@ -83,7 +83,7 @@ public class EmployeeFeedback {
 		Feedback feedback = new Feedback();
 		feedback.setCreationDate(LocalDate.now());
 		for(Integer i: QuestionBank.getInstance().getQuestionMap().keySet()) {
-			feedback.getChoiceList().add(new EmployeeChoice(i, ""));
+			feedback.getChoiceList().put(i,new EmployeeChoice(i, ""));
 		}
 		SessionFactory factory = factoryBean.getObject();
 		Session session = factory.getCurrentSession();

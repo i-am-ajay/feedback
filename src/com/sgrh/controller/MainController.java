@@ -16,21 +16,23 @@ import com.sgrh.service.EmployeeFeedbackService;
 public class MainController {
 	@Autowired
 	EmployeeFeedbackService eFS;
+	Employee empGlobal;
 	
 	@RequestMapping("/")
 	public String home(Model model) {
-		
-		//session.setAttribute("user", emp);
+		Employee empTemp = new Employee();
+		model.addAttribute("empInit", empTemp);
 		return "index";
 	}
 	
 	@RequestMapping("feedback")
-	public String feedback(Model model,HttpSession session) {
-		Employee emp = eFS.startEmployeeFeedback("GAA8664", "IT", "Software Programmer");
+	public String feedback(Model model,HttpSession session,@ModelAttribute("empInit") Employee empInit) {
 		eFS.generatedQuestions();
-		eFS.saveFeedback(emp);
-		System.out.println(emp.getEmpCode());
-		model.addAttribute("emp", emp);
+		empGlobal = eFS.startEmployeeFeedback(empInit.getEmpCode(), empInit.getDepartment(), empInit.getDesignation());
+		eFS.saveFeedback(empGlobal);
+		System.out.println(empGlobal.getEmpCode());
+		System.out.println("Size of list: "+empGlobal.getFeedbackList().get(0).getChoiceList().size());
+		model.addAttribute("emp", empGlobal);
 		return "feedback";
 	}
 	
@@ -39,6 +41,8 @@ public class MainController {
 		System.out.println(emp.getEmpCode());
 		System.out.println(emp.getFeedbackList().get(0));
 		System.out.println(emp.getFeedbackList().get(0).getChoiceList().get(2).getAnswer());
+		eFS.saveFeedback(emp);
+		
 		return "form_submitted";
 	}
 }

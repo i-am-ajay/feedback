@@ -2,8 +2,10 @@ package com.conf.component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
@@ -60,7 +62,7 @@ public class Employee {
 	}
 	
 	public EmployeeChoice getQuestionChoice(int feedback, int questionId) {
-		return feedbackList.get(feedback).getChoiceList().get(questionId);
+		return null;//feedbackList.get(feedback).getChoiceList().get(questionId);
 	}
 	
 }

@@ -46,27 +46,27 @@ public class QuestionBank {
 		createQuestion(14,"The \"Code Violet\" is for Violence.", new String[]{"True","False"}); 
 		// Employee statisfaction survey
 		
-		createQuestion(15,"The organization is the leader in the health care industry in Delhi.", new String[]{"A","S","D"});
-		createQuestion(16,"The experience I gain here improves my position in the market due to the reputation of the organization.", new String[]{"A","S","D"});
-		createQuestion(17,"The organization is a good place to work in terms of latest systems and practices.", new String[]{"A","S","D"});
-		createQuestion(18,"I am potimistic about my future success in this organization.", new String[]{"A","S","D"});
-		createQuestion(19,"My compensation matches with my job responsibilities.", new String[]{"A","S","D"});
-		createQuestion(20,"Mycompensation matches with similarly placed hospitals.", new String[]{"A","S","D"});
-		createQuestion(21,"My job responsibilities are reasonable enough for me to manage.", new String[]{"A","S","D"});
-		createQuestion(22,"My job gives me a sense of personal accomplishment.", new String[]{"A","S","D"});
-		createQuestion(23,"I get due recognition of my contributions.", new String[]{"A","S","D"});
-		createQuestion(24,"I get enough opportunity for learning and professional upgradation in the department/organization.", new String[]{"A","S","D"});
-		createQuestion(25,"I get sufficient time & opportunity to sharpen my skills to take higher responsibility.", new String[]{"A","S","D"});
-		createQuestion(26,"I get enough opportunity for learning and professional upgradation in the department/organization.", new String[]{"A","S","D"});
-		createQuestion(27,"There is a degree of professionalism in my Co-workers.", new String[]{"A","S","D"});
-		createQuestion(28,"There is a team spirit amongst the co-workers.", new String[]{"A","S","D"});
-		createQuestion(29,"There is a positive energy/morale in my co-workers.", new String[]{"A","S","D"});
-		createQuestion(30,"I can access my superiors easily.", new String[]{"A","S","D"});
-		createQuestion(31,"I am able to maintain a reasonable balance between my job and family life.", new String[]{"A","S","D"});
-		createQuestion(32,"I am satisfied with the working hours/break timings.", new String[]{"A","S","D"});
-		createQuestion(33,"I am satisfied with overall job security.", new String[]{"A","S","D"});
-		createQuestion(34,"Adequate Medical Benefits are given to employees.", new String[]{"A","S","D"});
-		createQuestion(35,"The various Loans and Advances give to Employees are big help to the employees.", new String[]{"A","S","D"});	
+		createQuestion(15,"The organization is the leader in the health care industry in Delhi.", new String[]{"Agreed","Some What Agree","Don't Agree"});
+		createQuestion(16,"The experience I gain here improves my position in the market due to the reputation of the organization.", new String[]{"Agreed","Some What Agree","Don't Agree"});
+		createQuestion(17,"The organization is a good place to work in terms of latest systems and practices.", new String[]{"Agreed","Some What Agree","Don't Agree"});
+		createQuestion(18,"I am potimistic about my future success in this organization.", new String[]{"Agreed","Some What Agree","Don't Agree"});
+		createQuestion(19,"My compensation matches with my job responsibilities.", new String[]{"Agreed","Some What Agree","Don't Agree"});
+		createQuestion(20,"Mycompensation matches with similarly placed hospitals.", new String[]{"Agreed","Some What Agree","Don't Agree"});
+		createQuestion(21,"My job responsibilities are reasonable enough for me to manage.", new String[]{"Agreed","Some What Agree","Don't Agree"});
+		createQuestion(22,"My job gives me a sense of personal accomplishment.", new String[]{"Agreed","Some What Agree","Don't Agree"});
+		createQuestion(23,"I get due recognition of my contributions.", new String[]{"Agreed","Some What Agree","Don't Agree"});
+		createQuestion(24,"I get enough opportunity for learning and professional upgradation in the department/organization.", new String[]{"Agreed","Some What Agree","Don't Agree"});
+		createQuestion(25,"I get sufficient time & opportunity to sharpen my skills to take higher responsibility.", new String[]{"Agreed","Some What Agree","Don't Agree"});
+		createQuestion(26,"I get enough opportunity for learning and professional upgradation in the department/organization.", new String[]{"Agreed","Some What Agree","Don't Agree"});
+		createQuestion(27,"There is a degree of professionalism in my Co-workers.", new String[]{"Agreed","Some What Agree","Don't Agree"});
+		createQuestion(28,"There is a team spirit amongst the co-workers.", new String[]{"Agreed","Some What Agree","Don't Agree"});
+		createQuestion(29,"There is a positive energy/morale in my co-workers.", new String[]{"Agreed","Some What Agree","Don't Agree"});
+		createQuestion(30,"I can access my superiors easily.", new String[]{"Agreed","Some What Agree","Don't Agree"});
+		createQuestion(31,"I am able to maintain a reasonable balance between my job and family life.", new String[]{"Agreed","Some What Agree","Don't Agree"});
+		createQuestion(32,"I am satisfied with the working hours/break timings.", new String[]{"Agreed","Some What Agree","Don't Agree"});
+		createQuestion(33,"I am satisfied with overall job security.", new String[]{"Agreed","Some What Agree","Don't Agree"});
+		createQuestion(34,"Adequate Medical Benefits are given to employees.", new String[]{"Agreed","Some What Agree","Don't Agree"});
+		createQuestion(35,"The various Loans and Advances give to Employees are big help to the employees.", new String[]{"Agreed","Some What Agree","Don't Agree"});	
 	}
 	public Questions createQuestion(int id, String name, String ...choices) {
 		Questions q = new Questions();

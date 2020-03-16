@@ -3,8 +3,12 @@ package com.conf.component;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.annotation.Generated;
 import javax.persistence.CascadeType;
@@ -20,6 +24,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenerationTime;
 import org.hibernate.mapping.Bag;
@@ -39,10 +44,15 @@ public class Feedback {
 	@JoinColumn(name="emp_id")
 	private Employee employee;
 	
+	@Transient
+	private EmployeeChoice currentQuestion;
+	@Transient
+	private int currentQuestionIndex;
+	
 	@Embedded
 	@ElementCollection
 	@CollectionTable(name="user_question_mapping")
-	private List<EmployeeChoice> choiceList = new ArrayList<>();
+	private Map<Integer,EmployeeChoice> choiceList = new HashMap<>();
 	
 	public LocalDate getCreationDate() {
 		return creationDate;
@@ -50,10 +60,10 @@ public class Feedback {
 	public void setCreationDate(LocalDate creationDate) {
 		this.creationDate = creationDate;
 	}
-	public List<EmployeeChoice> getChoiceList() {
+	public Map<Integer,EmployeeChoice> getChoiceList() {
 		return choiceList;
 	}
-	public void setChoiceList(List<EmployeeChoice> choiceList) {
+	public void setChoiceList(Map<Integer,EmployeeChoice> choiceList){
 		this.choiceList = choiceList;
 	}
 	public int getId(){
@@ -65,4 +75,18 @@ public class Feedback {
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
 	}
+	/*
+	public EmployeeChoice getCurrentQuestion() {
+		return this.currentQuestion;
+	}
+	public void setCurrentQuestion(EmployeeChoice currentQuestion) {
+		//this.currentQuestion = this.choiceList.get(currentQuestionIndex);
+	}
+	public int getCurrentQuestionIndex() {
+		return currentQuestionIndex;
+	}
+	public void setCurrentQuestionIndex(int currentQuestionIndex) {
+		this.currentQuestionIndex = currentQuestionIndex;
+	}
+	*/
 }
