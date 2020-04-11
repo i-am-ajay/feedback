@@ -13,6 +13,8 @@ public class EmployeeFeedbackService {
 	@Autowired
 	private EmployeeFeedback empFeedback;
 	
+	int count;
+	
 	public void generatedQuestions() {
 		empFeedback.saveQuestionMapInDB();
 		//empFeedback.addQuestions();
@@ -26,5 +28,9 @@ public class EmployeeFeedbackService {
 	
 	public void saveFeedback(Employee emp) {
 		empFeedback.saveEmpFeedback(emp);
+	}
+	
+	public void updateFeeback(Employee emp) {
+		empFeedback.updateEmpFeedback(emp);
 	}
 }

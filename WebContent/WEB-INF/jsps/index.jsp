@@ -14,7 +14,7 @@
 	<%@ include file = "header.jsp" %>
 	<div class="container p-2 m-auto">
 		<h4 class="border-bottom m-3 text-muted pb-2">Employee Details</h4>
-		<f:form method="POST" modelAttribute="empInit" action="feedback">
+		<f:form method="POST" modelAttribute="emp" action="feedback">
 		  <div class="form-row">
 		    <div class="form-group col-md-4">
 		      <label for="empcode" class="font-weight-bold">Employee Code</label>

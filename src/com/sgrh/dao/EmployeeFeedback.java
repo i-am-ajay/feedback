@@ -26,10 +26,10 @@ import com.conf.component.Feedback;
 import com.conf.component.Questions;
 
 @Repository
-public class EmployeeFeedback {
+public class EmployeeFeedback{
 	@Autowired
 	LocalSessionFactoryBean factoryBean;
-	
+	static int count;
 	
 	@Transactional
 	public Employee createOrGetEmployee(String empCode, String dept, String designation) {
@@ -49,13 +49,19 @@ public class EmployeeFeedback {
 	
 	@Transactional
 	public void saveQuestionMapInDB() {
-		SessionFactory factory = factoryBean.getObject();
-		Session session = factory.getCurrentSession();
-		Map<Integer,Questions> questionBank = QuestionBank.getInstance().getQuestionMap();
-		for(Integer in: questionBank.keySet()) {
-			System.out.println(questionBank.get(in).getChoices().get(0));
-			session.save(questionBank.get(in));
-			session.flush();
+		if(EmployeeFeedback.count == 0) {
+			return;
+		}
+		else {
+			count++;
+			SessionFactory factory = factoryBean.getObject();
+			Session session = factory.getCurrentSession();
+			Map<Integer,Questions> questionBank = QuestionBank.getInstance().getQuestionMap();
+			for(Integer in: questionBank.keySet()) {
+				System.out.println(questionBank.get(in).getChoices().get(0));
+				session.save(questionBank.get(in));
+				session.flush();
+			}
 		}
 		//session.flush();
 	}
@@ -80,28 +86,45 @@ public class EmployeeFeedback {
 	
 	@Transactional
 	public void addFeedback(Employee employee) {
+		System.out.println("Beginning Add Feedback method");
 		Feedback feedback = new Feedback();
 		feedback.setCreationDate(LocalDate.now());
 		for(Integer i: QuestionBank.getInstance().getQuestionMap().keySet()) {
 			feedback.getChoiceList().put(i,new EmployeeChoice(i, ""));
 		}
+		System.out.println("------------------------------------------------------1");
 		SessionFactory factory = factoryBean.getObject();
 		Session session = factory.getCurrentSession();
 		employee.getFeedbackList().add(feedback);
 		feedback.setEmployee(employee);
 		session.save(feedback);
+		System.out.println("-------------------------------------------------------2");
 	}
 	
 	@Transactional
 	public void saveEmpFeedback(Employee emp){
 		SessionFactory factory = factoryBean.getObject();
 		Session session = factory.getCurrentSession();
+		//Employee emp1 = session.get(Employee.class, emp.getEmpCode());
+		//session.merge(emp.getFeedbackList().get(0));
 		session.saveOrUpdate(emp);
+		session.flush();
+	}
+	@Transactional
+	public void updateEmpFeedback(Employee emp) {
+		SessionFactory factory = factoryBean.getObject();
+		Session session = factory.getCurrentSession();
+		Feedback feedback = emp.getFeedbackList().get(0);
+		feedback = session.get(Feedback.class,1);
+		feedback.setChoiceList(emp.getFeedbackList().get(0).getChoiceList());
+		//System.out.println(emp.getEmpCode());
+		//System.out.println(feedback.getId());
+		//System.out.println(feedback.getChoiceList().get(1).getAnswer());
 		session.flush();
 	}
 	
 	@Transactional
-	public void addQuestions() {
+	public void addQuestions(){
 		SessionFactory factory = factoryBean.getObject();
 		Session session = factory.getCurrentSession();
 		Questions question = new Questions();
