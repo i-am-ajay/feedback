@@ -49,7 +49,7 @@ public class EmployeeFeedback{
 	
 	@Transactional
 	public void saveQuestionMapInDB() {
-		if(EmployeeFeedback.count == 0) {
+		if(EmployeeFeedback.count > 0) {
 			return;
 		}
 		else {
@@ -85,7 +85,7 @@ public class EmployeeFeedback{
 	}
 	
 	@Transactional
-	public void addFeedback(Employee employee) {
+	public int addFeedback(Employee employee) {
 		System.out.println("Beginning Add Feedback method");
 		Feedback feedback = new Feedback();
 		feedback.setCreationDate(LocalDate.now());
@@ -99,6 +99,7 @@ public class EmployeeFeedback{
 		feedback.setEmployee(employee);
 		session.save(feedback);
 		System.out.println("-------------------------------------------------------2");
+		return feedback.getId();
 	}
 	
 	@Transactional
@@ -115,7 +116,7 @@ public class EmployeeFeedback{
 		SessionFactory factory = factoryBean.getObject();
 		Session session = factory.getCurrentSession();
 		Feedback feedback = emp.getFeedbackList().get(0);
-		feedback = session.get(Feedback.class,1);
+		feedback = session.get(Feedback.class,emp.getCurrentFeedbackId());
 		feedback.setChoiceList(emp.getFeedbackList().get(0).getChoiceList());
 		//System.out.println(emp.getEmpCode());
 		//System.out.println(feedback.getId());

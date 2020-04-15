@@ -38,10 +38,12 @@ public class MainController{
 		eFS.generatedQuestions();
 		empGlobal = eFS.startEmployeeFeedback(empInit.getEmpCode(), empInit.getDepartment(), empInit.getDesignation());
 		eFS.saveFeedback(empGlobal);
-		System.out.println("Feedback Id"+empGlobal.getFeedbackList().get(0).getId());
+		System.out.println("Feedback Id"+empGlobal.getCurrentFeedbackId());
 		//System.out.println("Size of list: "+empGlobal.getFeedbackList().get(0).getChoiceList().size());
 		//System.out.println("Feedback Employee"+empGlobal.getFeedbackList().get(0).getEmployee().getEmpCode());
 		//feedbackId = empGlobal.getFeedbackList().get(0).getId();
+		System.out.println(empGlobal.getFeedbackList().size());
+		System.out.println(empGlobal.getFeedbackList().get(0).getChoiceList().get(1));
 		model.addAttribute("emp", empGlobal);
 		return "feedback";
 	}

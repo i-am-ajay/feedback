@@ -22,7 +22,8 @@ public class EmployeeFeedbackService {
 	
 	public Employee startEmployeeFeedback(String empCode, String dept, String designation) {
 		Employee emp = empFeedback.createOrGetEmployee(empCode, dept, designation);
-		empFeedback.addFeedback(emp);
+		int id = empFeedback.addFeedback(emp);
+		emp.setCurrentFeedbackId(id);
 		return emp;
 	}
 	

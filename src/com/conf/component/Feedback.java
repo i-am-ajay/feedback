@@ -52,8 +52,7 @@ public class Feedback {
 	@Transient
 	private int currentQuestionIndex;
 	
-	@Embedded
-	@ElementCollection
+	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(name="user_question_mapping")
 	private Map<Integer,EmployeeChoice> choiceList = new HashMap<>();
 	

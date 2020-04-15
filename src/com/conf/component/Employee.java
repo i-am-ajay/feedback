@@ -19,6 +19,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
 
@@ -32,6 +33,9 @@ public class Employee {
 	private String designation;
 	@Column
 	private String department;
+	
+	@Transient
+	private int currentFeedbackId;
 	
 	@OneToMany(mappedBy="employee", cascade= {CascadeType.PERSIST, CascadeType.REMOVE},fetch=FetchType.EAGER)
 	List<Feedback> feedbackList = new ArrayList<>();
@@ -64,5 +68,13 @@ public class Employee {
 	public EmployeeChoice getQuestionChoice(int feedback, int questionId) {
 		return null;//feedbackList.get(feedback).getChoiceList().get(questionId);
 	}
+	public int getCurrentFeedbackId() {
+		return currentFeedbackId;
+	}
+	public void setCurrentFeedbackId(int currentFeedbackId) {
+		this.currentFeedbackId = currentFeedbackId;
+	}
+	
+	
 	
 }
