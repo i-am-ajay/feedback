@@ -88,8 +88,8 @@ public class EmployeeFeedback{
 	public int addFeedback(Employee employee) {
 		System.out.println("Beginning Add Feedback method");
 		Feedback feedback = new Feedback();
-		feedback.setCreationDate(LocalDate.now());
-		for(Integer i: QuestionBank.getInstance().getQuestionMap().keySet()) {
+		feedback.setFeedbackPeriod(LocalDate.now().withDayOfMonth(1));
+		for(Integer i: QuestionBank.getInstance().getQuestionMap().keySet()){
 			feedback.getChoiceList().put(i,new EmployeeChoice(i, ""));
 		}
 		System.out.println("------------------------------------------------------1");

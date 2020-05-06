@@ -27,6 +27,7 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenerationTime;
@@ -40,8 +41,11 @@ public class Feedback {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
-	@org.hibernate.annotations.Generated(GenerationTime.ALWAYS)
+	@CreationTimestamp
 	private LocalDate creationDate;
+	
+	@Column(name="feedback_date")
+	private LocalDate feedbackPeriod;
 	
 	@ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.REMOVE})
 	@JoinColumn(name="emp_id")
@@ -77,6 +81,14 @@ public class Feedback {
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
 	}
+	public LocalDate getFeedbackPeriod() {
+		return feedbackPeriod;
+	}
+	public void setFeedbackPeriod(LocalDate feedbackPeriod) {
+		this.feedbackPeriod = feedbackPeriod;
+	}
+	
+	
 	/*
 	public EmployeeChoice getCurrentQuestion() {
 		return this.currentQuestion;

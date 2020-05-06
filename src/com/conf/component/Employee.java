@@ -1,6 +1,7 @@
 package com.conf.component;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -21,10 +22,16 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
 import org.springframework.stereotype.Component;
 
 @Component
 @Entity
+@FilterDef(name="feedback_datewise",parameters= {
+		@ParamDef(name="feedback",type="date")
+})
 public class Employee {
 	@Id
 	@Column
@@ -38,6 +45,8 @@ public class Employee {
 	private int currentFeedbackId;
 	
 	@OneToMany(mappedBy="employee", cascade= {CascadeType.PERSIST, CascadeType.REMOVE},fetch=FetchType.EAGER)
+	//@Filter(name="feedback_datewise",condition= "feedback_date = :feedback")
+	
 	List<Feedback> feedbackList = new ArrayList<>();
 	
 	public String getEmpCode() {
@@ -74,7 +83,5 @@ public class Employee {
 	public void setCurrentFeedbackId(int currentFeedbackId) {
 		this.currentFeedbackId = currentFeedbackId;
 	}
-	
-	
 	
 }

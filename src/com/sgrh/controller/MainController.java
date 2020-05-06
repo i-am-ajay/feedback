@@ -53,6 +53,7 @@ public class MainController{
 		System.out.println(emp.getEmpCode());
 		//System.out.println(emp.getFeedbackList().get(0).getEmployee().getEmpCode());
 		System.out.println(emp.getFeedbackList().get(0).getChoiceList().get(2).getQuestionid());
+		System.out.println("Feedback Size"+emp.getFeedbackList().size());
 		eFS.updateFeeback(emp);
 		return "form_submitted";
 	}
