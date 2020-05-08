@@ -17,7 +17,7 @@ public class QuestionBank {
 	}
 	
 	public Questions getQuestion(Integer qNum) {
-		System.out.println("Question called");
+		//System.out.println("Question called");
 		return questionMap.get(qNum);
 	}
 	

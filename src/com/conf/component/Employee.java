@@ -24,6 +24,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.OrderBy;
 import org.hibernate.annotations.ParamDef;
 import org.springframework.stereotype.Component;
 
@@ -44,9 +45,8 @@ public class Employee {
 	@Transient
 	private int currentFeedbackId;
 	
-	@OneToMany(mappedBy="employee", cascade= {CascadeType.PERSIST, CascadeType.REMOVE},fetch=FetchType.EAGER)
-	//@Filter(name="feedback_datewise",condition= "feedback_date = :feedback")
-	
+	@OneToMany(mappedBy="employee", cascade= {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH},fetch=FetchType.EAGER)
+	@OrderBy(clause = "id DESC")
 	List<Feedback> feedbackList = new ArrayList<>();
 	
 	public String getEmpCode() {

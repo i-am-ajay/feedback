@@ -20,7 +20,7 @@
 		<f:hidden path="empCode" value="${emp.empCode}"/>
 		<f:hidden path="designation" vlaue="${emp.designation}" />
 		<f:hidden path="department" value="${emp.department}" />
-		<f:hidden path="feedbackList[0].id" value="${feedbackList.get(0).id}" /> 
+		<f:hidden path="feedbackList[0].id" value="${feedbackList.get(feedbackList.size()-1).id}" /> 
 		
 	<nav>
 		<div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
@@ -46,6 +46,7 @@
 	
 	<div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
 			<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+			<h4>${emp.feedbackList.size()}</h4>
 				<c:forEach var="i" items="${emp.feedbackList.get(0).choiceList.keySet()}" varStatus="count">
 				<c:if test="${count.index<13}">
 					<div class="border-top border-dark p-3 mb-2">

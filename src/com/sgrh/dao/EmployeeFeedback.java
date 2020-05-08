@@ -44,6 +44,9 @@ public class EmployeeFeedback{
 			employee.setDepartment(dept);
 			session.persist(employee);
 		}
+		else {
+			System.out.println("EmployeeFeedback#createOrGetEmployee List of size"+employee.getFeedbackList().size());
+		}
 		return employee;
 	}
 	
@@ -58,12 +61,11 @@ public class EmployeeFeedback{
 			Session session = factory.getCurrentSession();
 			Map<Integer,Questions> questionBank = QuestionBank.getInstance().getQuestionMap();
 			for(Integer in: questionBank.keySet()) {
-				System.out.println(questionBank.get(in).getChoices().get(0));
+				//System.out.println(questionBank.get(in).getChoices().get(0));
 				session.save(questionBank.get(in));
 				session.flush();
 			}
 		}
-		//session.flush();
 	}
 	
 	private Employee getEmployee(String empCode) {
@@ -86,19 +88,19 @@ public class EmployeeFeedback{
 	
 	@Transactional
 	public int addFeedback(Employee employee) {
-		System.out.println("Beginning Add Feedback method");
+		//System.out.println("Beginning Add Feedback method");
 		Feedback feedback = new Feedback();
 		feedback.setFeedbackPeriod(LocalDate.now().withDayOfMonth(1));
 		for(Integer i: QuestionBank.getInstance().getQuestionMap().keySet()){
 			feedback.getChoiceList().put(i,new EmployeeChoice(i, ""));
 		}
-		System.out.println("------------------------------------------------------1");
+		
 		SessionFactory factory = factoryBean.getObject();
 		Session session = factory.getCurrentSession();
 		employee.getFeedbackList().add(feedback);
 		feedback.setEmployee(employee);
-		session.save(feedback);
-		System.out.println("-------------------------------------------------------2");
+		session.persist(feedback);
+		session.flush();
 		return feedback.getId();
 	}
 	

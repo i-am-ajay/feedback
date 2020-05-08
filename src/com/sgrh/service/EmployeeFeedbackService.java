@@ -23,6 +23,7 @@ public class EmployeeFeedbackService {
 	public Employee startEmployeeFeedback(String empCode, String dept, String designation) {
 		Employee emp = empFeedback.createOrGetEmployee(empCode, dept, designation);
 		int id = empFeedback.addFeedback(emp);
+		System.out.println("EmployeeFeedbackService#startEmployeeFeedback Feedback Size"+emp.getFeedbackList().size());
 		emp.setCurrentFeedbackId(id);
 		return emp;
 	}

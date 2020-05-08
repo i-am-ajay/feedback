@@ -1,6 +1,7 @@
 package com.conf.component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -47,7 +48,7 @@ public class Feedback {
 	@Column(name="feedback_date")
 	private LocalDate feedbackPeriod;
 	
-	@ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.REMOVE})
+	@ManyToOne(cascade= {CascadeType.REFRESH})
 	@JoinColumn(name="emp_id")
 	private Employee employee;
 	
@@ -58,6 +59,7 @@ public class Feedback {
 	
 	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(name="user_question_mapping")
+	@Fetch(FetchMode.SUBSELECT)
 	private Map<Integer,EmployeeChoice> choiceList = new HashMap<>();
 	
 	public LocalDate getCreationDate() {

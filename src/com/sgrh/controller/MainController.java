@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.conf.component.Employee;
+import com.conf.component.Feedback;
 import com.sgrh.service.EmployeeFeedbackService;
 
 @Controller
@@ -38,22 +39,27 @@ public class MainController{
 		eFS.generatedQuestions();
 		empGlobal = eFS.startEmployeeFeedback(empInit.getEmpCode(), empInit.getDepartment(), empInit.getDesignation());
 		eFS.saveFeedback(empGlobal);
-		System.out.println("Feedback Id"+empGlobal.getCurrentFeedbackId());
+		for(Feedback feedback: empGlobal.getFeedbackList()) {
+			if(feedback != null)
+				System.out.println(feedback.getId());
+			else
+				System.out.println(feedback);
+		}
 		//System.out.println("Size of list: "+empGlobal.getFeedbackList().get(0).getChoiceList().size());
 		//System.out.println("Feedback Employee"+empGlobal.getFeedbackList().get(0).getEmployee().getEmpCode());
 		//feedbackId = empGlobal.getFeedbackList().get(0).getId();
-		System.out.println(empGlobal.getFeedbackList().size());
-		System.out.println(empGlobal.getFeedbackList().get(0).getChoiceList().get(1));
 		model.addAttribute("emp", empGlobal);
+		for(Feedback feed : empGlobal.getFeedbackList()) {
+			System.out.println("Feed: "+feed.getId()+" Choice: "+feed.getChoiceList());
+		}
 		return "feedback";
 	}
 	
 	@RequestMapping(value = "submit_form", method=RequestMethod.POST)
 	public String formSubmission(Model model, @ModelAttribute("emp") Employee emp){
-		System.out.println(emp.getEmpCode());
 		//System.out.println(emp.getFeedbackList().get(0).getEmployee().getEmpCode());
-		System.out.println(emp.getFeedbackList().get(0).getChoiceList().get(2).getQuestionid());
-		System.out.println("Feedback Size"+emp.getFeedbackList().size());
+		//System.out.println(emp.getFeedbackList().get(0).getChoiceList().get(2).getQuestionid());
+		//System.out.println("Feedback Size"+emp.getFeedbackList().size());
 		eFS.updateFeeback(emp);
 		return "form_submitted";
 	}
