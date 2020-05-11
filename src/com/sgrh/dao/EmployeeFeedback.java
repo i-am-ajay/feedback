@@ -116,6 +116,12 @@ public class EmployeeFeedback{
 	
 	@Transactional
 	public void getDept() {
+		SessionFactory factory = factoryBean.getObject();
+		
+	}
+	
+	@Transactional 
+	public void getDesignation() {
 		
 	}
 	
