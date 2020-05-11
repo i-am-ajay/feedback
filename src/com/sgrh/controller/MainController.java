@@ -50,7 +50,7 @@ public class MainController{
 		//feedbackId = empGlobal.getFeedbackList().get(0).getId();
 		model.addAttribute("emp", empGlobal);
 		for(Feedback feed : empGlobal.getFeedbackList()) {
-			System.out.println("Feed: "+feed.getId()+" Choice: "+feed.getChoiceList());
+			System.out.println("Feedback ID"+feed.getId()+"Choice :1"+feed.getChoiceList().get(1).getAnswer());
 		}
 		return "feedback";
 	}

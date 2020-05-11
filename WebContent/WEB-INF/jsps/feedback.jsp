@@ -47,7 +47,7 @@
 	<div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
 			<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
 			<h4>${emp.feedbackList.size()}</h4>
-				<c:forEach var="i" items="${emp.feedbackList.get(0).choiceList.keySet()}" varStatus="count">
+				<c:forEach var="i" items="${emp.feedbackList.get(emp.feedbackList.size()-1).choiceList.keySet()}" varStatus="count">
 				<c:if test="${count.index<13}">
 					<div class="border-top border-dark p-3 mb-2">
 						<c:set var="question" value="${QuestionBank.getInstance().getQuestion(i)}" />
@@ -63,7 +63,7 @@
 				</c:forEach>
 			</div>
 			<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-				<c:forEach var="i" items="${emp.feedbackList.get(0).choiceList.keySet()}" varStatus="count">
+				<c:forEach var="i" items="${emp.feedbackList.get(emp.feedbackList.size()-1).choiceList.keySet()}" varStatus="count">
 				<c:if test="${count.index>=13}">
 					<div class="border-top border-dark p-3 mb-2">
 						<c:set var="question" value="${QuestionBank.getInstance().getQuestion(i)}" />

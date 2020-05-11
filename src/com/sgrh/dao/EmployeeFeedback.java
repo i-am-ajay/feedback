@@ -113,6 +113,12 @@ public class EmployeeFeedback{
 		session.saveOrUpdate(emp);
 		session.flush();
 	}
+	
+	@Transactional
+	public void getDept() {
+		
+	}
+	
 	@Transactional
 	public void updateEmpFeedback(Employee emp) {
 		SessionFactory factory = factoryBean.getObject();
