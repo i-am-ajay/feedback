@@ -11,6 +11,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -20,6 +21,7 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
 import org.springframework.stereotype.Repository;
 
 import com.ajay.others.QuestionBank;
+import com.conf.component.Dept;
 import com.conf.component.Employee;
 import com.conf.component.EmployeeChoice;
 import com.conf.component.Feedback;
@@ -117,7 +119,11 @@ public class EmployeeFeedback{
 	@Transactional
 	public void getDept() {
 		SessionFactory factory = factoryBean.getObject();
-		
+		Session session = factory.getCurrentSession();
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<Dept> criteria = builder.createQuery(Dept.class);
+		Root<Dept> root = criteria.from(Dept.class);
+		criteria.multiselect(root.get(""));
 	}
 	
 	@Transactional 
@@ -126,15 +132,12 @@ public class EmployeeFeedback{
 	}
 	
 	@Transactional
-	public void updateEmpFeedback(Employee emp) {
+	public void updateEmpFeedback(Employee emp){
 		SessionFactory factory = factoryBean.getObject();
 		Session session = factory.getCurrentSession();
 		Feedback feedback = emp.getFeedbackList().get(0);
 		feedback = session.get(Feedback.class,emp.getCurrentFeedbackId());
 		feedback.setChoiceList(emp.getFeedbackList().get(0).getChoiceList());
-		//System.out.println(emp.getEmpCode());
-		//System.out.println(feedback.getId());
-		//System.out.println(feedback.getChoiceList().get(1).getAnswer());
 		session.flush();
 	}
 	

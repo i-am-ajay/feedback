@@ -1,7 +1,12 @@
 package com.sgrh.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -62,5 +67,17 @@ public class MainController{
 		//System.out.println("Feedback Size"+emp.getFeedbackList().size());
 		eFS.updateFeeback(emp);
 		return "form_submitted";
+	}
+	
+	@RequestMapping(value ="graphs",method=RequestMethod.GET)
+	public String showGraph(Model model){
+		// fetch dept list and add to model attribute.
+		List<String> list = Arrays.asList("IT","Central Store","Accounts","HR");
+		model.addAttribute("deptList",list);
+		// fetch a summary of of user feedback and return a json object. 
+		JSONObject obj = new JSONObject();
+		obj.put("Name", 100);
+		model.addAttribute("data",obj);
+		return "report";
 	}
 }
