@@ -22,18 +22,43 @@
 		    </div>
 		    <div class="form-group col-md-4">
 		      <label for="designation" class="font-weight-bold">Designation</label>
-		      <f:input class="form-control form-control-sm" id="designation" placeholder="Designation" path="designation" />
+		      <f:input class="form-control form-control-sm" id="designation" placeholder="Designation" path="designation"/>
 		    </div>
 		    <div class="form-group col-md-4">
 		      <label for="department" class="font-weight-bold">Department</label>
-		      <f:input class="form-control form-control-sm" id="department" placeholder="Department" path="department" />
+		      <f:input class="form-control form-control-sm" id="department" placeholder="Department" path="department"/>
 		    </div>
 		  </div>
 		   <input type="submit" class="btn btn-small btn-secondary btn-block" value="Start Feedback"/>
 		</f:form>
 	</div>
 	
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script>
+		$(document).ready(
+			function(){
+				$("#department").attr("readonly","readonly");
+				$("#designation").attr("readonly","readonly");
+			}
+		);
+		$('#empcode').on("focusout",function(e){
+			$.ajax({
+				type: "POST",
+				url: "${home}pisEmp",
+				data: 'empCode='+this.value,
+				success: function(result, status, xhr){
+					result=JSON.parse(result);
+					$("#empcode").val(result.code);
+					$("#department").val(result.dept);
+					$("#designation").val(result.desig);
+				},
+				error: function(result, status, xhr){
+					console.log(result);
+				}
+			})
+		});
+	</script>
 </body>
 </html>

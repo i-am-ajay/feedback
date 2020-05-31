@@ -34,6 +34,7 @@
 					</datalist>
 				</div>
 				    <a href="#" class="btn btn-primary">Show Graph</a>
+				    <input type="hidden" id="hidden" value="${data}" />
 				  </div>
 				</div>
 			</div>

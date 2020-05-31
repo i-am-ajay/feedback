@@ -9,16 +9,17 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import javax.transaction.Transactional;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ajay.others.QuestionBank;
 import com.conf.component.Dept;
@@ -30,13 +31,16 @@ import com.conf.component.Questions;
 @Repository
 public class EmployeeFeedback{
 	@Autowired
-	LocalSessionFactoryBean factoryBean;
+	@Qualifier(value="feedback_factory")
+	SessionFactory feedbackFactoryBean;
+	
 	static int count;
 	
-	@Transactional
+	@Transactional("feedback")
 	public Employee createOrGetEmployee(String empCode, String dept, String designation) {
 		Employee employee = null;
-		SessionFactory factory = factoryBean.getObject();
+		//SessionFactory factory = feedbackFactoryBean.getObject();
+		SessionFactory factory = feedbackFactoryBean;
 		Session session = factory.getCurrentSession();
 		employee = session.find(Employee.class,empCode);
 		if(employee == null) {
@@ -52,14 +56,16 @@ public class EmployeeFeedback{
 		return employee;
 	}
 	
-	@Transactional
+	@Transactional("feedback")
 	public void saveQuestionMapInDB() {
+		EmployeeFeedback.count=1;
 		if(EmployeeFeedback.count > 0) {
 			return;
 		}
 		else {
 			count++;
-			SessionFactory factory = factoryBean.getObject();
+			//SessionFactory factory = feedbackFactoryBean.getObject();
+			SessionFactory factory = feedbackFactoryBean;
 			Session session = factory.getCurrentSession();
 			Map<Integer,Questions> questionBank = QuestionBank.getInstance().getQuestionMap();
 			for(Integer in: questionBank.keySet()) {
@@ -70,8 +76,10 @@ public class EmployeeFeedback{
 		}
 	}
 	
+	@Transactional("feedback")
 	private Employee getEmployee(String empCode) {
-		SessionFactory factory = factoryBean.getObject();
+		//SessionFactory factory = feedbackFactoryBean.getObject();
+		SessionFactory factory = feedbackFactoryBean;
 		Session session = factory.getCurrentSession();
 		CriteriaBuilder builder = session.getCriteriaBuilder();
 		CriteriaQuery<Employee> criteriaQuery = builder.createQuery(Employee.class);
@@ -88,7 +96,7 @@ public class EmployeeFeedback{
 		return employee;
 	}
 	
-	@Transactional
+	@Transactional("feedback")
 	public int addFeedback(Employee employee) {
 		//System.out.println("Beginning Add Feedback method");
 		Feedback feedback = new Feedback();
@@ -97,7 +105,8 @@ public class EmployeeFeedback{
 			feedback.getChoiceList().put(i,new EmployeeChoice(i, ""));
 		}
 		
-		SessionFactory factory = factoryBean.getObject();
+		//SessionFactory factory = feedbackFactoryBean.getObject();
+		SessionFactory factory = feedbackFactoryBean;
 		Session session = factory.getCurrentSession();
 		employee.getFeedbackList().add(feedback);
 		feedback.setEmployee(employee);
@@ -106,9 +115,10 @@ public class EmployeeFeedback{
 		return feedback.getId();
 	}
 	
-	@Transactional
+	@Transactional("feedback")
 	public void saveEmpFeedback(Employee emp){
-		SessionFactory factory = factoryBean.getObject();
+		//SessionFactory factory = feedbackFactoryBean.getObject();
+		SessionFactory factory = feedbackFactoryBean;
 		Session session = factory.getCurrentSession();
 		//Employee emp1 = session.get(Employee.class, emp.getEmpCode());
 		//session.merge(emp.getFeedbackList().get(0));
@@ -116,9 +126,10 @@ public class EmployeeFeedback{
 		session.flush();
 	}
 	
-	@Transactional
+	@Transactional("feedback")
 	public void getDept() {
-		SessionFactory factory = factoryBean.getObject();
+		//SessionFactory factory = feedbackFactoryBean.getObject();
+		SessionFactory factory = feedbackFactoryBean;
 		Session session = factory.getCurrentSession();
 		CriteriaBuilder builder = session.getCriteriaBuilder();
 		CriteriaQuery<Dept> criteria = builder.createQuery(Dept.class);
@@ -131,9 +142,10 @@ public class EmployeeFeedback{
 		
 	}
 	
-	@Transactional
+	@Transactional("feedback")
 	public void updateEmpFeedback(Employee emp){
-		SessionFactory factory = factoryBean.getObject();
+		//SessionFactory factory = feedbackFactoryBean.getObject();
+		SessionFactory factory = feedbackFactoryBean;
 		Session session = factory.getCurrentSession();
 		Feedback feedback = emp.getFeedbackList().get(0);
 		feedback = session.get(Feedback.class,emp.getCurrentFeedbackId());
@@ -141,9 +153,10 @@ public class EmployeeFeedback{
 		session.flush();
 	}
 	
-	@Transactional
+	@Transactional("feedback")
 	public void addQuestions(){
-		SessionFactory factory = factoryBean.getObject();
+		//SessionFactory factory = feedbackFactoryBean.getObject();
+		SessionFactory factory = feedbackFactoryBean;
 		Session session = factory.getCurrentSession();
 		Questions question = new Questions();
 		question.setQuestion("Do you know your rights");

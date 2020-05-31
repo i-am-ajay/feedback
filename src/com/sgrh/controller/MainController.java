@@ -3,6 +3,7 @@ package com.sgrh.controller;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.conf.component.Employee;
 import com.conf.component.Feedback;
@@ -39,9 +41,10 @@ public class MainController{
 		return "index";
 	}
 	
-	@RequestMapping("feedback")
+	@RequestMapping("/feedback")
 	public String feedback(Model model,HttpSession session,@ModelAttribute("emp") Employee empInit){
 		eFS.generatedQuestions();
+		System.out.println(empInit.getDesignation());
 		empGlobal = eFS.startEmployeeFeedback(empInit.getEmpCode(), empInit.getDepartment(), empInit.getDesignation());
 		eFS.saveFeedback(empGlobal);
 		for(Feedback feedback: empGlobal.getFeedbackList()) {
@@ -70,14 +73,16 @@ public class MainController{
 	}
 	
 	@RequestMapping(value ="graphs",method=RequestMethod.GET)
-	public String showGraph(Model model){
+	public ModelAndView showGraph(Map<String,Object> model){
 		// fetch dept list and add to model attribute.
 		List<String> list = Arrays.asList("IT","Central Store","Accounts","HR");
-		model.addAttribute("deptList",list);
+		model.put("deptList",list);
 		// fetch a summary of of user feedback and return a json object. 
 		JSONObject obj = new JSONObject();
 		obj.put("Name", 100);
-		model.addAttribute("data",obj);
-		return "report";
+		String jsonString = obj.toString();
+		System.out.println(jsonString);
+		model.put("data",jsonString);
+		return new ModelAndView("report");
 	}
 }

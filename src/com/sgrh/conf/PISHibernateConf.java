@@ -19,16 +19,15 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@PropertySource(value= {"classpath:com/sgrh/conf/application.properties"})
-public class HibernateConf {
+public class PISHibernateConf {
 	@Autowired
     private Environment environment;
  
-    @Bean(name="Feedback")
+    @Bean(name="PIS")
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(new String[] { "com.conf.component" });
+        sessionFactory.setPackagesToScan(new String[] { "com.conf.pis.component" });
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
      }
@@ -36,27 +35,25 @@ public class HibernateConf {
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/feedback");
-        dataSource.setUsername("root");
-        dataSource.setPassword("admin");
+        dataSource.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        dataSource.setUrl("jdbc:sqlserver://172.16.8.75;databaseName=PIS");
+        dataSource.setUsername("sa");
+        dataSource.setPassword("sql_2005");
         return dataSource;
     }
      
     private Properties hibernateProperties() {
         Properties properties = new Properties();
-        properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL57Dialect");
+        properties.put("hibernate.dialect", "org.hibernate.dialect.SQLServerDialect");
         properties.put("hibernate.show_sql", "true");
-        properties.put("hibernate.format_sql", "false");
-        //properties.put("hibernate.hbm2ddl.auto", "create");
         return properties;        
     }
      
-    @Bean(name="FeedbackTran")
-    @Qualifier("FeedbackTran")
-    public HibernateTransactionManager transactionManager() {
+    @Bean(name="PISTran")
+    @Qualifier("PISTran")
+    public HibernateTransactionManager transactionManager(@Autowired @Qualifier(value="PIS")SessionFactory s) {
        HibernateTransactionManager txManager = new HibernateTransactionManager();
-       txManager.setSessionFactory(sessionFactory().getObject());
+       txManager.setSessionFactory(s);
        return txManager;
     }
 }
