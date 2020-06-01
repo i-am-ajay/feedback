@@ -15,7 +15,6 @@
 	<mvc:annotation-driven></mvc:annotation-driven>
 	<mvc:resources location="/resources/" mapping="/static_resources/**"></mvc:resources>
 	<tx:annotation-driven />
-	<!--  <bean name="database_config" class="com.conf.HibernateConf" /> -->
 	<import resource="classpath:/com/sgrh/conf/hibernate_conf.xml" />
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/jsps/"></property>

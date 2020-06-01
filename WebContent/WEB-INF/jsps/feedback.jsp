@@ -20,33 +20,19 @@
 		<f:hidden path="empCode" value="${emp.empCode}"/>
 		<f:hidden path="designation" vlaue="${emp.designation}" />
 		<f:hidden path="department" value="${emp.department}" />
-		<f:hidden path="feedbackList[0].id" value="${feedbackList.get(feedbackList.size()-1).id}" /> 
+		<f:hidden path="feedbackList[0].id" value="${emp.feedbackList.get(emp.feedbackList.size()-1).id}" /> 
+		<f:hidden path="feedbackList[0].id" value="${emp.feedbackList.get(0).id}" /> 
 		
 	<nav>
 		<div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
 			<a class="nav-item nav-link active text-secondary" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Section 1</a>
 			<a class="nav-item nav-link text-secondary" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Section 2</a>
 		</div>
-	</nav> 
-	<!-- 
-	<c:forEach var="i" items="${emp.feedbackList.get(0).choiceList.keySet()}" varStatus="count">
-		<div class="border-top border-dark p-3 mb-2">
-			<c:set var="question" value="${QuestionBank.getInstance().getQuestion(i)}" />
-			<blockquote class="blockquote small bg-light">${question.question}</blockquote>
-			<c:forEach var="c" items="${question.choices}">
-				<div class="form-check form-check-inline px-4 py-2">
-					<label class="form-check-label font-weight-bold pr-2" for="radio${i}">${c}</label>
-					<f:radiobutton class="form-check-input" id="radio${i}" name="${i}" path="feedbackList[0].choiceList[${i}].answer" value="${c}"/>
-				</div>
-			</c:forEach>
-		</div>	
-	</c:forEach>
-	-->	
+	</nav>
 	<!-- Tabs -->
 	
 	<div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
 			<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-			<h4>${emp.feedbackList.size()}</h4>
 				<c:forEach var="i" items="${emp.feedbackList.get(emp.feedbackList.size()-1).choiceList.keySet()}" varStatus="count">
 				<c:if test="${count.index<13}">
 					<div class="border-top border-dark p-3 mb-2">
@@ -55,7 +41,7 @@
 						<c:forEach var="c" items="${question.choices}">
 							<div class="form-check form-check-inline px-4 py-2">
 								<label class="form-check-label font-weight-bold pr-2" for="radio${i}">${c}</label>
-								<f:radiobutton class="form-check-input" id="radio${i}" name="${i}" path="feedbackList[0].choiceList[${i}].answer" value="${c}"/>
+								<f:radiobutton class="form-check-input" id="radio${i}" name="${i}" path="feedbackList[${emp.feedbackList.size()-1}].choiceList[${i}].answer" value="${c}"/>
 							</div>
 						</c:forEach>
 					</div>
@@ -71,7 +57,7 @@
 						<c:forEach var="c" items="${question.choices}">
 							<div class="form-check form-check-inline px-4 py-2">
 								<label class="form-check-label font-weight-bold pr-2" for="radio${i}">${c}</label>
-								<f:radiobutton class="form-check-input" id="radio${i}" name="${i}" path="feedbackList[0].choiceList[${i}].answer" value="${c}"/>
+								<f:radiobutton class="form-check-input" id="radio${i}" name="${i}" path="feedbackList[${ emp.feedbackList.size()-1}].choiceList[${i}].answer" value="${c}"/>
 							</div>
 						</c:forEach>
 					</div>	

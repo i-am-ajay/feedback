@@ -46,7 +46,7 @@ public class Employee {
 	private int currentFeedbackId;
 	
 	@OneToMany(mappedBy="employee", cascade= {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH},fetch=FetchType.EAGER)
-	@OrderBy(clause = "id DESC")
+	@OrderBy(clause = "id ASC")
 	List<Feedback> feedbackList = new ArrayList<>();
 	
 	public String getEmpCode() {

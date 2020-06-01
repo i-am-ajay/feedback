@@ -18,7 +18,7 @@
 		  <div class="form-row">
 		    <div class="form-group col-md-4">
 		      <label for="empcode" class="font-weight-bold">Employee Code</label>
-		      <f:input class="form-control form-control-sm" id="empcode" placeholder="Employee Code" path="empCode" />
+		      <f:input class="form-control form-control-sm" id="empcode" placeholder="Employee Code" path="empCode"/>
 		    </div>
 		    <div class="form-group col-md-4">
 		      <label for="designation" class="font-weight-bold">Designation</label>
@@ -39,26 +39,34 @@
 	<script>
 		$(document).ready(
 			function(){
+				$("#empcode").attr("required","true");
 				$("#department").attr("readonly","readonly");
 				$("#designation").attr("readonly","readonly");
 			}
 		);
 		$('#empcode').on("focusout",function(e){
-			$.ajax({
-				type: "POST",
-				url: "${home}pisEmp",
-				data: 'empCode='+this.value,
-				success: function(result, status, xhr){
-					result=JSON.parse(result);
-					$("#empcode").val(result.code);
-					$("#department").val(result.dept);
-					$("#designation").val(result.desig);
-				},
-				error: function(result, status, xhr){
-					console.log(result);
-				}
-			})
+			if(!this.value){
+				$("#department").val("");
+				$("#designation").val("");
+			}
+			else{
+				$.ajax({
+					type: "POST",
+					url: "${home}pisEmp",
+					data: 'empCode='+this.value,
+					success: function(result, status, xhr){
+						result=JSON.parse(result);
+						$("#empcode").val(result.code);
+						$("#department").val(result.dept);
+						$("#designation").val(result.desig);
+					},
+					error: function(result, status, xhr){
+						console.log(result);
+					}
+				})
+			}
 		});
+		
 	</script>
 </body>
 </html>

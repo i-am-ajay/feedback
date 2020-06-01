@@ -21,12 +21,15 @@ import org.springframework.web.servlet.ModelAndView;
 import com.conf.component.Employee;
 import com.conf.component.Feedback;
 import com.sgrh.service.EmployeeFeedbackService;
+import com.sgrh.service.ReportService;
 
 @Controller
 @SessionAttributes("emp")
 public class MainController{
 	@Autowired
 	EmployeeFeedbackService eFS;
+	@Autowired
+	ReportService service;
 	
 	Employee empGlobal;
 	
@@ -57,9 +60,9 @@ public class MainController{
 		//System.out.println("Feedback Employee"+empGlobal.getFeedbackList().get(0).getEmployee().getEmpCode());
 		//feedbackId = empGlobal.getFeedbackList().get(0).getId();
 		model.addAttribute("emp", empGlobal);
-		for(Feedback feed : empGlobal.getFeedbackList()) {
+		/*for(Feedback feed : empGlobal.getFeedbackList()) {
 			System.out.println("Feedback ID"+feed.getId()+"Choice :1"+feed.getChoiceList().get(1).getAnswer());
-		}
+		}*/
 		return "feedback";
 	}
 	
@@ -78,6 +81,10 @@ public class MainController{
 		List<String> list = Arrays.asList("IT","Central Store","Accounts","HR");
 		model.put("deptList",list);
 		// fetch a summary of of user feedback and return a json object. 
+		Map<String,Long> map = service.pieChart("");
+		map.forEach((k,v) ->{
+			System.out.println(k+ " -> "+v);
+		});
 		JSONObject obj = new JSONObject();
 		obj.put("Name", 100);
 		String jsonString = obj.toString();

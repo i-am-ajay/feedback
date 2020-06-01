@@ -1,0 +1,6 @@
+Reports:
+* Add a department option and based on department there will be a pie chart, a summary and a empwise detail.
+* For summary, pull total employees in dept from pis and total employees in feedback system 
+	and show how many employee are there and how many have inserted feedback.
+	
+* 
