@@ -12,7 +12,7 @@
 </head>
 <body>
 	<header>
-		
+		<version>1</version>
 	</header>
 	<div class="container">
 		<div class="row">

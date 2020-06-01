@@ -16,6 +16,7 @@ public class PISController {
 	private PISDetails pisDetails;
 	@RequestMapping(value="pisEmp")
 	public @ResponseBody String getPisEmployee(@RequestParam(name="empCode")String empCode) {
+		System.out.println("For compiling");
 		PISEmployee emp = pisDetails.getEmployee(empCode);
 		JSONObject object = new JSONObject();
 		object.put("code", emp.getEmpCode());
