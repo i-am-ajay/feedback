@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.conf.pis.component.PISEmployee;
-import com.sgrh.service.PISDetails;
+import com.sgrh.service.PISService;
 
 @Controller
 public class PISController {
 	@Autowired
-	private PISDetails pisDetails;
+	private PISService pisDetails;
 	@RequestMapping(value="pisEmp")
 	public @ResponseBody String getPisEmployee(@RequestParam(name="empCode")String empCode) {
 		System.out.println("For compiling");

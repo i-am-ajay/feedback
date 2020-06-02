@@ -1,12 +1,5 @@
 const dimension = {'width':300, 'height':300, 'radius':150};
 const cent = {'x':(dimension.width/2 +5), 'y':(dimension.height/2+5)};
-/*const data = [
-    {"name":"pizza","cost":500},
-    {"name":"chumchum","cost":400},
-    {"name":"kaju Katli","cost":700},
-    {"name":"gulab jamun","cost":450},
-    {"name":"khoya barfi","cost":300}
-]*/
 
 const svg = d3.select('.canvas')
                 .append('svg')
@@ -58,9 +51,12 @@ const update = data => {
                 .attr('fill','Grey');
     
     const paths = graph.selectAll('path').data(pie(data));
+    // remove present dom.
+    paths.exit().remove();
     // update present dom.
     paths.attr('d',archPath);
-
+ 
+    // enter new dom.
     paths.enter().append('path')
                 .attr('class','arc')
                 .attr('stroke','#fff')
@@ -71,5 +67,5 @@ const update = data => {
 
 }
 // read data
-update(data);
+
 //const angles = pie();

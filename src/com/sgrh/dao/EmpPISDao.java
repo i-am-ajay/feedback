@@ -48,7 +48,7 @@ public class EmpPISDao {
 		CriteriaBuilder builder = session.getCriteriaBuilder();
 		CriteriaQuery<String> criteriaQuery = builder.createQuery(String.class);
 		Root<DeptMaster> pisRoot = criteriaQuery.from(DeptMaster.class);
-		criteriaQuery.select(pisRoot.get("dept"));
+		criteriaQuery.select(pisRoot.get("dept")).where(builder.notLike(pisRoot.get("dept"), "Zzz%"));
 		
 		TypedQuery<String> deptQuery = session.createQuery(criteriaQuery);
 		return deptQuery.getResultList();

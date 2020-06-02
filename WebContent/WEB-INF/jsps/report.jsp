@@ -10,22 +10,21 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <!--  <link href="${pageContext.request.contextPath}/static_resources/css/style.css" rel="stylesheet" > -->
 </head>
-<body>
+<body class="bg-light mt-4">
 	<header>
-		<version>1</version>
 	</header>
 	<div class="container">
-		<div class="row">
-			<div class="col">
+		<div class="row my-auto">
+			<div class="col mt-5">
 				<div class="card">
 				  <div class="card-header">
-				    Select Department
+				    <h3>Select Department</h3>
 				  </div>
 				  <div class="card-body">
-				    <div class="form-group row">
-					<label for="dept" class="control-label font-weight-bold col-6 col-md-4">
+				    <div class="form-group row my-4">
+					<label for="dept" class="control-label font-weight-bold col-6 col-md-4 text-center my-auto">
 						Department<small class="text-danger">*</small></label>
-					<input list="deptList" class="form-control form-control-sm col-6 col-md-8"
+					<input list="deptList" class="form-control form-control col-6 col-md-8"
 						id="dept" name="dept" placeholder="Department" />
 					<datalist id="deptList">
 						<c:forEach var="item" items="${deptList}">
@@ -33,12 +32,13 @@
 						</c:forEach>
 					</datalist>
 				</div>
-				    <a href="#" class="btn btn-primary">Show Graph</a>
+				    <a href="#" class="btn btn-primary btn-block w-75 mx-auto mt-5" id="btn">Show Graph</a>
 				    <input type="hidden" id="hidden" value="" />
 				  </div>
 				</div>
 			</div>
 			<div class="col">
+				<h3 class="text-center mt-4">User feedback Pie Chart</h3>
 				<div class="canvas">
 					
 				</div>
@@ -48,21 +48,25 @@
 	<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js">
+    </script>
 	<script src="${pageContext.request.contextPath}/static_resources/js/index.js"></script>
-	<script>
-		let data = {};
-		$(document).ready(function(x){
-			$.ajax({
-				type: 'POST',
-				url:"${home}pie_chart",
-				data:"dept="+$("#dept").val(),
-				success:function(r,status,xrt){
-					console.log(r);
-				}
-			});
-		})
-		
-	</script>
 	<script src="${pageContext.request.contextPath}/static_resources/js/graph.js"></script>
+	<script>
+		let pie_data = {};
+		function pie_input(){
+				$.ajax({
+					type: 'POST',
+					url:"${home}pie_chart",
+					data:"dept="+$("#dept").val(),
+					success:function(r,status,xrt){
+						update(JSON.parse(r));
+					}
+				});
+		}
+		$(document).ready(pie_input)
+		$("#btn").on("click",pie_input);
+	</script>
 </body>
 </html>

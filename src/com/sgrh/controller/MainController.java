@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.conf.component.Employee;
 import com.conf.component.Feedback;
 import com.sgrh.service.EmployeeFeedbackService;
+import com.sgrh.service.PISService;
 import com.sgrh.service.ReportService;
 
 @Controller
@@ -30,6 +31,9 @@ public class MainController{
 	EmployeeFeedbackService eFS;
 	@Autowired
 	ReportService service;
+	
+	@Autowired
+	PISService pisService;
 	
 	Employee empGlobal;
 	
@@ -47,7 +51,6 @@ public class MainController{
 	@RequestMapping("/feedback")
 	public String feedback(Model model,HttpSession session,@ModelAttribute("emp") Employee empInit){
 		eFS.generatedQuestions();
-		System.out.println(empInit.getDesignation());
 		empGlobal = eFS.startEmployeeFeedback(empInit.getEmpCode(), empInit.getDepartment(), empInit.getDesignation());
 		eFS.saveFeedback(empGlobal);
 		for(Feedback feedback: empGlobal.getFeedbackList()) {
@@ -73,23 +76,5 @@ public class MainController{
 		//System.out.println("Feedback Size"+emp.getFeedbackList().size());
 		eFS.updateFeeback(emp);
 		return "form_submitted";
-	}
-	
-	@RequestMapping(value ="graphs",method=RequestMethod.GET)
-	public ModelAndView showGraph(Map<String,Object> model){
-		// fetch dept list and add to model attribute.
-		List<String> list = Arrays.asList("IT","Central Store","Accounts","HR");
-		model.put("deptList",list);
-		// fetch a summary of of user feedback and return a json object. 
-		Map<String,Long> map = service.pieChart("");
-		map.forEach((k,v) ->{
-			System.out.println(k+ " -> "+v);
-		});
-		JSONObject obj = new JSONObject();
-		obj.put("Name", 100);
-		String jsonString = obj.toString();
-		System.out.println(jsonString);
-		model.put("data",jsonString);
-		return new ModelAndView("report");
 	}
 }

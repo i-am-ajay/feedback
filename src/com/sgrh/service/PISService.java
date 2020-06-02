@@ -9,7 +9,7 @@ import com.conf.pis.component.PISEmployee;
 import com.sgrh.dao.EmpPISDao;
 
 @Service
-public class PISDetails {
+public class PISService {
 	@Autowired
 	EmpPISDao pisDao;
 	
@@ -17,13 +17,10 @@ public class PISDetails {
 		PISEmployee pisEmp = pisDao.getEmpFromPis(empCode);
 		return pisEmp;
 	}
-	
 	public List<String> getDeptList(){
 		return pisDao.getDeptMasterList();
 	}
-	
 	public List<String> getDesigList(){
 		return pisDao.getDesigList();
 	}
-	
 }

@@ -19,12 +19,20 @@ public class ReportDao {
 	SessionFactory sessionFactory;
 	
 	@Transactional("feedback")
-	public List<String[]> pieChart(String department) {
-		department = "Information Technology";
+	public List<String[]> pieChartDataDeptWise(String department) {
 		Session session = sessionFactory.getCurrentSession();
 		Query summaryData = session.createQuery("select c.answer, count(c.answer)from Employee e join e.feedbackList f join f.choiceList c"
 				+ " where e.department = :dept group by c.answer");
 		summaryData.setParameter("dept", department);
+		List<String[]> l = summaryData.getResultList();
+		return l;
+	}
+	
+	@Transactional("feedback")
+	public List<String[]> pieChartDataAll() {
+		Session session = sessionFactory.getCurrentSession();
+		Query summaryData = session.createQuery("select c.answer, count(c.answer)from Employee e join e.feedbackList f join f.choiceList c"
+				+ " group by c.answer");
 		List<String[]> l = summaryData.getResultList();
 		return l;
 	}

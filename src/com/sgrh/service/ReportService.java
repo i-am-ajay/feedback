@@ -18,7 +18,16 @@ public class ReportService {
 	ReportDao reportDao;
 	
 	public Map<String,Long> pieChart(String department){
-		List<String[]> summaryList = reportDao.pieChart(department);
+		List<String[]> summaryList = null;
+		if(department != null && department !="" && department !=" " && department.length()>0) {
+			summaryList = reportDao.pieChartDataDeptWise(department);
+			
+		}
+		else {
+			summaryList = reportDao.pieChartDataAll();
+			
+			
+		}
 		HashMap<String,Long> summaryMap = new HashMap<>();
 		if(summaryList != null && summaryList.size()>0) {
 			for(Object[] str: summaryList) {
