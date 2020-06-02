@@ -7,6 +7,7 @@ import javax.persistence.Query;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.NativeQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -35,5 +36,13 @@ public class ReportDao {
 				+ " group by c.answer");
 		List<String[]> l = summaryData.getResultList();
 		return l;
+	}
+	
+	@Transactional("feedback")
+	public List<Object[]> getCategory() {
+		//SessionFactory factory = feedbackFactoryBean;
+		Session session = sessionFactory.getCurrentSession();
+		NativeQuery<Object[]> query= session.createNativeQuery("SELECT answer,category FROM answer_cat");
+		return query.getResultList();
 	}
 }

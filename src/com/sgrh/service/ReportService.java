@@ -21,14 +21,14 @@ public class ReportService {
 		List<String[]> summaryList = null;
 		if(department != null && department !="" && department !=" " && department.length()>0) {
 			summaryList = reportDao.pieChartDataDeptWise(department);
-			
 		}
 		else {
 			summaryList = reportDao.pieChartDataAll();
-			
-			
 		}
+		List<Object[]> list = reportDao.getCategory();
+	
 		HashMap<String,Long> summaryMap = new HashMap<>();
+		
 		if(summaryList != null && summaryList.size()>0) {
 			for(Object[] str: summaryList) {
 				summaryMap.put((String)str[0], (Long)str[1]);

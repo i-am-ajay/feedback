@@ -13,7 +13,7 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
+import org.hibernate.query.NativeQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
@@ -172,4 +172,6 @@ public class EmployeeFeedback{
 		session.persist(question);
 		session.persist(question1);
 	}
+	
+	
 }
