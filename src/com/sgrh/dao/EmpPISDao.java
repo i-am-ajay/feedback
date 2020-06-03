@@ -2,6 +2,7 @@ package com.sgrh.dao;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.function.Predicate;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -11,6 +12,7 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.stat.SessionStatistics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -65,5 +67,26 @@ public class EmpPISDao {
 		
 		TypedQuery<String> desigQuery = session.createQuery(criteriaQuery);
 		return desigQuery.getResultList();
+	}
+	
+	@Transactional("PIS")
+	public long empCount(String dept) {
+		Session session = factory.getCurrentSession();
+		long empCount = 0;
+		if(dept != null && dept.length()>0) {
+			NativeQuery deptCodeQuery = session.createNativeQuery("Select DeptCode From DeptMast WHERE Dept = :dept");
+			deptCodeQuery.setParameter("dept", dept);
+			
+			NativeQuery empCountQuery = session.createNativeQuery("SELECT count(*) FROM EmpMast"
+					+ " WHERE 1=1 AND AppDeptCode = :deptCode");
+			empCountQuery.setParameter("deptCode", deptCodeQuery.getSingleResult());
+			empCount = (Integer)empCountQuery.getSingleResult();
+		}
+		else {
+			// Get all employees
+			NativeQuery empCountQuery = session.createNativeQuery("SELECT count(*) FROM EmpMast");
+			empCount = (Integer)empCountQuery.getSingleResult();
+		}
+		return empCount;
 	}
 }

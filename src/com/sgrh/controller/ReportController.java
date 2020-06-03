@@ -1,5 +1,6 @@
 package com.sgrh.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,6 +44,20 @@ public class ReportController {
 			
 		}
 		return Arrays.toString(strList.toArray(new String[strList.size()]));
+	}
+	
+	@RequestMapping(value="summary")
+	public @ResponseBody String summary(@RequestParam(name="dept") String dept) {
+		long totalCount = service.empCount(dept);
+		long feedbackCount = service.feedbackCount(dept, LocalDate.of(2020, 6, 1));
+		System.out.println(feedbackCount);
+		//long totalCount = 10000;
+		JSONObject obj = new JSONObject();
+		obj.put("total", totalCount);
+		obj.put("feed", feedbackCount);
+		obj.put("no_feed", (totalCount - feedbackCount));
+		
+		return obj.toString();
 	}
 	
 	@RequestMapping(value ="graphs",method=RequestMethod.GET)

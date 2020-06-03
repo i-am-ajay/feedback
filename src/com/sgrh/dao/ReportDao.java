@@ -1,5 +1,7 @@
 package com.sgrh.dao;
 
+import java.math.BigInteger;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -44,5 +46,27 @@ public class ReportDao {
 		Session session = sessionFactory.getCurrentSession();
 		NativeQuery<Object[]> query= session.createNativeQuery("SELECT answer,category FROM answer_cat");
 		return query.getResultList();
+	}
+	
+	@Transactional("feedback")
+	public int getfeedbackCount(String dept,LocalDate date) {
+		Session session = sessionFactory.getCurrentSession();
+		NativeQuery query =null;
+		if(dept != null && dept.length()>0) {
+			NativeQuery empCodeQuery = session.createNativeQuery("SELECT empcode FROM employee where 1=1 AND department = :dept");
+			empCodeQuery.setParameter("dept", dept);
+			query = session.createNativeQuery("SELECT count(DISTINCT emp_id) FROM feedback WHERE 1=1 AND "
+					+ " creationDate = :date AND emp_id IN (:emplist)");
+			query.setParameter("date", date.withDayOfMonth(1));
+			query.setParameter("emplist", empCodeQuery.getResultList());
+		}
+		else {
+			query = session.createNativeQuery("SELECT count(DISTINCT emp_id) FROM feedback WHERE 1=1 AND "
+					+ " creationDate = :date");
+			query.setParameter("date", date);
+			}
+		Object obj = query.getSingleResult();
+		BigInteger i = (BigInteger)obj;
+		return i.intValue();
 	}
 }

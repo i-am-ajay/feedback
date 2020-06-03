@@ -14,8 +14,8 @@
 	<header>
 	</header>
 	<div class="container">
-		<div class="row my-auto">
-			<div class="col mt-5">
+		<div class="row my-auto border">
+			<div class="col-5 mt-5">
 				<div class="card">
 				  <div class="card-header">
 				    <h3>Select Department</h3>
@@ -37,9 +37,39 @@
 				  </div>
 				</div>
 			</div>
-			<div class="col">
+			<div class="col-7">
 				<h3 class="text-center mt-4">User feedback Pie Chart</h3>
-				<div class="canvas">
+				<div class="canvas text-center border">
+					
+				</div>
+			</div>
+		</div>
+		<!-- Row 2 -->
+		<div class="row my-auto border">
+			<div class="col-5 mt-5">
+				<div class="card">
+				  <div class="card-header">
+				    <h3>Department-wise Summary</h3>
+				  </div>
+				  <div class="card-body">
+				    	<div class="row">
+				    		<div class="col-10"><h6>Total Employees</h6></div>
+				    		<div class="col-2"><h6><span class="badge badge-primary py-2  w-100" id=total>20</span></h6></div>
+				    	</div>
+						<div class="row">
+							<div class="col-10"><h6>Feedback Submitted By</h6></div>
+				    		<div class="col-2"><h6><span class="badge badge-success py-2  w-100" id="feed">14</span></h6></div>
+						</div>
+						<div class="row">
+							<div class="col-10"><h6>Feedback Not Submitted By</h6></div>
+				    		<div class="col-2"><h6><span class="badge badge-danger py-2  w-100" id="no_feed">6</span></h6></div>
+						</div>
+					</div>
+				  </div>
+			</div>
+			<div class="col-7">
+				<h3 class="text-center mt-4">User feedback Pie Chart</h3>
+				<div class="canvas text-center border">
 					
 				</div>
 			</div>
@@ -65,8 +95,22 @@
 					}
 				});
 		}
-		$(document).ready(pie_input)
-		$("#btn").on("click",pie_input);
+		function emp_count(){
+			$.ajax({
+				type: 'POST',
+				url: '${home}summary',
+				data: "dept="+$("#dept").val(),
+				success: function(result,status,xrt){
+					result = JSON.parse(result);
+					console.log(result);
+					$("#total").text(result.total);
+					$("#feed").text(result.feed);
+					$("#no_feed").text(result.no_feed);
+				}
+			})
+		}
+		$(document).ready(pie_input).ready(emp_count)
+		$("#btn").on("click",pie_input).on("click",emp_count);
 	</script>
 </body>
 </html>

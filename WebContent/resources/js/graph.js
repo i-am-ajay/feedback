@@ -1,5 +1,5 @@
-const dimension = {'width':300, 'height':300, 'radius':150};
-const cent = {'x':(dimension.width/2 +5), 'y':(dimension.height/2+5)};
+const dimension = {'width':300, 'height':100, 'radius':100};
+const cent = {'x':(dimension.width/2 +5), 'y':(dimension.height/2+60)};
 
 const svg = d3.select('.canvas')
                 .append('svg')
