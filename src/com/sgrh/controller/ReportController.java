@@ -34,16 +34,18 @@ public class ReportController {
 	public @ResponseBody String generatePieChart(@RequestParam(name="dept")String department) {
 		Map<String,Long> dataMap = service.pieChart(department);
 		List<String> strList = new ArrayList<>();
-		for(String str: dataMap.keySet()) {
-			if((str != null) && (str != " ") && (str !="") && str.length()>0) {
+		String result = "[]";
+		if(dataMap!=null) {
+		for(String str: dataMap.keySet()){
+			if((str != null) && (str != " ") && (str !="") && str.length()>0){
 				JSONObject obj = new JSONObject();
 				obj.put("name", str);
 				obj.put("value", dataMap.get(str));
 				strList.add(obj.toString());
 			}
-			
-		}
-		return Arrays.toString(strList.toArray(new String[strList.size()]));
+			result = Arrays.toString(strList.toArray(new String[strList.size()]));
+		}}
+		return result;
 	}
 	
 	@RequestMapping(value="summary")
