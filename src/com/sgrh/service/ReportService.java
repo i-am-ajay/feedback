@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.conf.component.Employee;
 import com.sgrh.dao.EmpPISDao;
 import com.sgrh.dao.ReportDao;
 
@@ -37,6 +38,10 @@ public class ReportService {
 		return map;
 	}
 	
+	public void employeewiseData(String department,LocalDate date) {
+		List<Employee> empList = reportDao.empList(department, date);
+		
+	}
 	public Map<String,Long> convertUserInput(List<String[]> summaryList){
 		List<Object[]> list = reportDao.getCategory();
 		

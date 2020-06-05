@@ -14,14 +14,14 @@
 	<header>
 	</header>
 	<div class="container">
-		<div class="row my-auto border">
+		<div class="row my-auto">
 			<div class="col-5 mt-5">
-				<div class="card">
+				<div class="card mt-4">
 				  <div class="card-header">
-				    <h3>Select Department</h3>
+				    <h5>Select Department</h5>
 				  </div>
 				  <div class="card-body">
-				    <div class="form-group row my-4">
+				    <div class="form-group row">
 					<label for="dept" class="control-label font-weight-bold col-6 col-md-4 text-center my-auto">
 						Department<small class="text-danger">*</small></label>
 					<input list="deptList" class="form-control form-control col-6 col-md-8"
@@ -38,18 +38,18 @@
 				</div>
 			</div>
 			<div class="col-7">
-				<h3 class="text-center mt-4">User feedback Pie Chart</h3>
+				<h4 class="text-center mt-4">Department Feedback Pie Chart</h4>
 				<div class="canvas text-center border">
 					
 				</div>
 			</div>
 		</div>
 		<!-- Row 2 -->
-		<div class="row my-auto border">
+		<div class="row my-auto">
 			<div class="col-5 mt-5">
 				<div class="card">
 				  <div class="card-header">
-				    <h3>Department-wise Summary</h3>
+				    <h5>Department-wise Summary</h5>
 				  </div>
 				  <div class="card-body">
 				    	<div class="row">
@@ -68,7 +68,7 @@
 				  </div>
 			</div>
 			<div class="col-7">
-				<h3 class="text-center mt-4">User feedback Pie Chart</h3>
+				<h4 class="text-center mt-4">User Feedback Bar Chart</h4>
 				<div class="canvas text-center border">
 					
 				</div>
