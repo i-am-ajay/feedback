@@ -78,19 +78,27 @@ public class ReportDao {
 	}
 	
 	@Transactional("feedback")
-	public List<Employee> empList(String department, LocalDate date){
+	public List<Object[]> empList(String department, LocalDate date){
 		Session session = sessionFactory.getCurrentSession();
-		NativeQuery query = session.createNativeQuery(getQuery(department));
+		NativeQuery query = session.createNativeQuery(getQuery(department,date));
+		if(department != null && department.length() > 0){
+			query.setParameter("dept", department);
+			query.setParameter("date", date);
+		}
+		else {
+			query.setParameter("date", date);
+		}
 		return query.getResultList();
 	}
 	
-	public int getQuestionCount() {
+	@Transactional("feedback")
+	public Object getQuestionCount() {
 		Session session = sessionFactory.getCurrentSession();
-		NativeQuery query = session.createNativeQuery("SELECT count(*) FROM questions.");
-		return (int)query.getSingleResult();
+		NativeQuery query = session.createNativeQuery("SELECT count(*) FROM questions");
+		return query.getSingleResult();
 	}
 	
-	private String getQuery(String dept) {
+	private String getQuery(String dept,LocalDate date) {
 		String query = "";
 		if(dept != null && dept.length() > 0) {
 			query = "SELECT Summary.empcode, Summary.category, max(w) FROM(\r\n" + 
@@ -98,7 +106,7 @@ public class ReportDao {
 					"	user_question_mapping ON feedback.id = user_question_mapping.Feedback_id INNER JOIN answer_cat\r\n" + 
 					"	ON user_question_mapping.answer = answer_cat.answer\r\n" + 
 					"	WHERE 1=1\r\n" + 
-					"   	AND employee.department = :dept or AND feedback.feedback_date = :date" +
+					"   	AND employee.department = :dept AND feedback.feedback_date = :date" +
 					"	GROUP BY employee.EmpCode, answer_cat.category ORDER BY empcode,w desc\r\n" + 
 					"	) AS Summary GROUP BY Summary.empcode";
 		}
@@ -111,6 +119,38 @@ public class ReportDao {
 					"   	AND feedback.feedback_date = :date" +
 					"	GROUP BY employee.EmpCode, answer_cat.category ORDER BY empcode,w desc\r\n" + 
 					"	) AS Summary GROUP BY Summary.empcode";
+		}
+		return query;
+	}
+	
+	@Transactional("feedback")
+	public List<Object[]> feedbackDetails(String dept, LocalDate date){
+		Session session = sessionFactory.getCurrentSession();
+		NativeQuery query = session.createNativeQuery(feedbackDetailsQuery(dept));
+		if ((dept != null) && (dept.length() > 0)) {
+			query.setParameter("date", LocalDate.of(2020, 6, 1));
+			query.setParameter("dept", dept);
+		}
+		else {
+			query.setParameter("date", LocalDate.of(2020, 6, 1));
+		}
+		return query.getResultList();
+	}
+	
+	private String feedbackDetailsQuery(String dept) {
+		String query = null;
+		if(dept != null && dept.length() > 0) {
+			query = "SELECT questionid, count(category), category FROM user_question_mapping JOIN"
+					+ " answer_cat ON user_question_mapping.answer = answer_cat.answer WHERE 1=1 AND "
+					+ "feedback_id IN (SELECT ID FROM feedback WHERE 1=1 AND feedback_date = :date AND emp_id IN (" + 
+					"		SELECT employee.EmpCode FROM employee WHERE employee.department = :dept))" + 
+					" GROUP BY questionid, category";
+		}
+		else {
+			query = "SELECT questionid, count(category), category FROM user_question_mapping JOIN "
+					+ " answer_cat ON user_question_mapping.answer = answer_cat.answer WHERE 1=1 "
+					+ "AND feedback_id IN (	SELECT ID FROM feedback WHERE 1=1 AND "
+					+"feedback_date = :date ) GROUP BY questionid, category";
 		}
 		return query;
 	}

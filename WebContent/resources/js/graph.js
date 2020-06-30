@@ -1,5 +1,19 @@
 const dimension = {'width':300, 'height':100, 'radius':100};
 const cent = {'x':(dimension.width/2 +5), 'y':(dimension.height/2+60)};
+var categorical = [
+	  { "name" : "schemeAccent", "n": 8},
+	  { "name" : "schemeDark2", "n": 8},
+	  { "name" : "schemePastel2", "n": 8},
+	  { "name" : "schemeSet2", "n": 8},
+	  { "name" : "schemeSet1", "n": 9},
+	  { "name" : "schemePastel1", "n": 9},
+	  { "name" : "schemeCategory10", "n" : 10},
+	  { "name" : "schemeSet3", "n" : 12 },
+	  { "name" : "schemePaired", "n": 12},
+	  { "name" : "schemeCategory20", "n" : 20 },
+	  { "name" : "schemeCategory20b", "n" : 20},
+	  { "name" : "schemeCategory20c", "n" : 20 }
+	]
 
 const svg = d3.select('.canvas')
                 .append('svg')
@@ -38,7 +52,7 @@ legendGroup.attr('transform',`translate(${dimension.width+40},10)`);
 // update function
 const update = data => {
     // set a scale
-    const ordinal = d3.scaleOrdinal(d3['schemeSet3']);
+    const ordinal = d3.scaleOrdinal(d3[categorical[6].name]);
     ordinal.domain(data.map(d=> d.name));
 
     // create legends

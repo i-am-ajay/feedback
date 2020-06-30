@@ -18,11 +18,14 @@ public class PISController {
 	public @ResponseBody String getPisEmployee(@RequestParam(name="empCode")String empCode) {
 		System.out.println("For compiling");
 		PISEmployee emp = pisDetails.getEmployee(empCode);
-		JSONObject object = new JSONObject();
-		object.put("code", emp.getEmpCode());
-		object.put("dept", emp.getEmpDept().getDept());
-		object.put("desig", emp.getEmpDesig().getDesig());
-		return object.toString();
+		JSONObject object = null;
+		if(emp != null) {
+			object = new JSONObject();
+			object.put("code", emp.getEmpCode());
+			object.put("dept", emp.getEmpDept().getDept());
+			object.put("desig", emp.getEmpDesig().getDesig());
+		}
+		return object == null ? null : object.toString();
 	}
 	// method to get pis dept list
 	

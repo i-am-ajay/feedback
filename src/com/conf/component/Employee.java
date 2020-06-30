@@ -31,7 +31,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Entity
 @FilterDef(name="feedback_datewise",parameters= {
-		@ParamDef(name="feedback",type="date")
+		@ParamDef(name="feedback_date",type="LocalDate")
 })
 public class Employee {
 	@Id
@@ -47,6 +47,7 @@ public class Employee {
 	
 	@OneToMany(mappedBy="employee", cascade= {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH},fetch=FetchType.EAGER)
 	@OrderBy(clause = "id ASC")
+	@Filter(name = "feedback_datewise", condition = "feedback_date = :feedback_date")
 	List<Feedback> feedbackList = new ArrayList<>();
 	
 	public String getEmpCode() {

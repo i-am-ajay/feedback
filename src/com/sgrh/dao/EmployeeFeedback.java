@@ -27,6 +27,7 @@ import com.conf.component.Employee;
 import com.conf.component.EmployeeChoice;
 import com.conf.component.Feedback;
 import com.conf.component.Questions;
+import com.conf.component.User;
 
 @Repository
 public class EmployeeFeedback{
@@ -51,8 +52,19 @@ public class EmployeeFeedback{
 			session.persist(employee);
 		}
 		else {
-			System.out.println("EmployeeFeedback#createOrGetEmployee List of size"+employee.getFeedbackList().size());
+			//System.out.println("EmployeeFeedback#createOrGetEmployee List of size"+employee.getFeedbackList().size());
 		}
+		return employee;
+	}
+	
+	@Transactional("feedback")
+	public Employee isEmpFeedbackExists(String emp) {
+		// Metod will return employee if feedback exists for given date else null.
+		// A filter is used for feedback date in Employee class.
+		Session session = feedbackFactoryBean.getCurrentSession();
+		session.enableFilter("feedback_datewise").setParameter("feedback_date", LocalDate.of(2020, 6, 1));
+		Employee employee = session.get(Employee.class, emp);
+		session.disableFilter("feedback_datewise");
 		return employee;
 	}
 	
@@ -173,5 +185,12 @@ public class EmployeeFeedback{
 		session.persist(question1);
 	}
 	
+	@Transactional("feedback")
+	// get user details for databse user table.
+	public User getUser(String userName) {
+		Session session = feedbackFactoryBean.getCurrentSession();
+		User user = session.get(User.class, userName);
+		return user;
+	}
 	
 }

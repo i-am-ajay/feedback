@@ -15,8 +15,17 @@
 <body>
 	<%@ include file = "header.jsp" %>
 	<div class="bg-light m-2 border-secondary mt-5">
-		<h4 class="m-3 mt-2 pb-2">Dear Employee!! Your feedback has been submitted to HR, thanks for your time and valuable feedback.</h4>
+	<c:choose> 
+		<c:when test="${submitted == true}">
+			<h4 class="m-3 mt-2 pb-2">Dear Employee!! Your feedback has been submitted to HR, thanks for your time and valuable feedback.</h4>
+		</c:when>
+		<c:otherwise>
+			<h4 class="m-3 mt-2 pb-2">Dear Employee!! Your feedback has already been submitted to HR, you are not allowed to resubmit this feedback.</h4>
+		</c:otherwise>
+	</c:choose>
 		<h6 class="m-3 mt-1 pb-2"><span class="font-weight-bold text-danger pr-2">Note:</span>You cannot resubmit the same feedback, don't follow the same link to resubmit your feedback. </h6>
+		<a class="btn btn-block w-25 btn-secondary mx-auto" href="redirect:\\">Go To Feedback Page</a>
 	</div>
+	
 </body>
 </html>

@@ -6,17 +6,16 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Report Dashboard</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<!--  <link href="${pageContext.request.contextPath}/static_resources/css/style.css" rel="stylesheet" > -->
 </head>
-<body class="bg-light mt-4">
-	<header>
-	</header>
+<body class="bg-light mt-1">
+	<%@ include file = "header.jsp" %>
 	<div class="container">
 		<div class="row my-auto">
-			<div class="col-5 mt-5">
-				<div class="card mt-4">
+			<div class="col-md-5 col">
+				<div class="card mt-3">
 				  <div class="card-header">
 				    <h5>Select Department</h5>
 				  </div>
@@ -37,39 +36,40 @@
 				  </div>
 				</div>
 			</div>
-			<div class="col-7">
+			<div class="col-md-7 col">
 				<h4 class="text-center mt-4">Department Feedback Pie Chart</h4>
-				<div class="canvas text-center border">
+				<div class="canvas text-center">
 					
 				</div>
 			</div>
 		</div>
 		<!-- Row 2 -->
 		<div class="row my-auto">
-			<div class="col-5 mt-5">
+			<div class="col-md-5 col mt-3">
 				<div class="card">
 				  <div class="card-header">
 				    <h5>Department-wise Summary</h5>
 				  </div>
 				  <div class="card-body">
 				    	<div class="row">
-				    		<div class="col-10"><h6>Total Employees</h6></div>
-				    		<div class="col-2"><h6><span class="badge badge-primary py-2  w-100" id=total>20</span></h6></div>
+				    		<div class="col-sm-10"><h6>Total Employees</h6></div>
+				    		<div class="col-sm-2"><h6><span class="badge badge-primary py-2  w-100" id=total>20</span></h6></div>
 				    	</div>
 						<div class="row">
-							<div class="col-10"><h6>Feedback Submitted By</h6></div>
-				    		<div class="col-2"><h6><span class="badge badge-success py-2  w-100" id="feed">14</span></h6></div>
+							<div class="col-sm-10"><h6>Feedback Submitted By</h6></div>
+				    		<div class="col-sm-2"><h6><span class="badge badge-success py-2  w-100" id="feed">14</span></h6></div>
 						</div>
 						<div class="row">
-							<div class="col-10"><h6>Feedback Not Submitted By</h6></div>
-				    		<div class="col-2"><h6><span class="badge badge-danger py-2  w-100" id="no_feed">6</span></h6></div>
+							<div class="col-sm-10"><h6>Feedback Not Submitted By</h6></div>
+				    		<div class="col-sm-2"><h6><span class="badge badge-danger py-2  w-100" id="no_feed">6</span></h6></div>
 						</div>
+						<div class="mt-3 col"><a href="details" class=" btn btn-xs btn-primary btn-block w-75 mx-auto">Detailed Feedback</a></div>
 					</div>
 				  </div>
 			</div>
-			<div class="col-7">
+			<div class="col-md-7 col">
 				<h4 class="text-center mt-4">User Feedback Bar Chart</h4>
-				<div class="canvas text-center border">
+				<div class="canvas_bar ml-5 pl-5">
 					
 				</div>
 			</div>
@@ -79,10 +79,12 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<script src="https://d3js.org/d3.v5.min.js"></script>
+	<script src="//d3js.org/d3-scale-chromatic.v0.3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js">
     </script>
 	<script src="${pageContext.request.contextPath}/static_resources/js/index.js"></script>
 	<script src="${pageContext.request.contextPath}/static_resources/js/graph.js"></script>
+	<script src="${pageContext.request.contextPath}/static_resources/js/bar_chart.js"></script>
 	<script>
 		let pie_data = {};
 		function pie_input(){
@@ -102,15 +104,25 @@
 				data: "dept="+$("#dept").val(),
 				success: function(result,status,xrt){
 					result = JSON.parse(result);
-					console.log(result);
 					$("#total").text(result.total);
 					$("#feed").text(result.feed);
 					$("#no_feed").text(result.no_feed);
 				}
 			})
 		}
-		$(document).ready(pie_input).ready(emp_count)
-		$("#btn").on("click",pie_input).on("click",emp_count);
+		function bar_chart(){
+			$.ajax({
+				type : 'POST',
+				url : '${home}barchart',
+				data : "dept="+$('#dept').val(),
+				success: function(result, status, xrt){
+					console.log(result);
+					update_bar(JSON.parse(result));
+				}
+			})
+		}
+		$(document).ready(pie_input).ready(emp_count).ready(bar_chart)
+		$("#btn").on("click",pie_input).on("click",emp_count).on("click",bar_chart);
 	</script>
 </body>
 </html>

@@ -28,16 +28,20 @@ public class QuestionBank {
 	public void setQuestionMap(Map<Integer, Questions> questionMap) {
 		this.questionMap = questionMap;
 	}
+	
+	public String getQuestionStatement(Integer qNum) {
+		return questionMap.get(qNum).getQuestion();
+	}
 
 	private void setQuestions() {
-		createQuestion(1,"Are you aware that the Hospital has frame Employee rights and responsibilities?",new String[]{"Can't say","Yes","No"});
-		createQuestion(2,"Is there a sexual harassment committe in the hospital?",new String[]{"Can't say","Yes","No"});
+		createQuestion(1,"Are you aware that the Hospital has frame Employee rights and responsibilities?",new String[]{"Yes","No","Can't say"});
+		createQuestion(2,"Is there a sexual harassment committe in the hospital?",new String[]{"Yes","No","Can't say"});
 		createQuestion(3,"How do you represent or put up your grievance if any?",new String[]{"To HR thru HOD","Directly to HR","Others"});
 		createQuestion(4,"Are you aware that it is an employee's responsibility to get his/her leave approved in advance and not avail it as a right?",new String[]{"Yes","No"});
 		createQuestion(5,"Are you aware that the hospital provides free of charge medical facility (both OPC & IPD) to its employees?",new String[]{"Yes","No"});
 		createQuestion(6,"Are you aware that Gratuity is payable to eligible employee after they have served for certain period satisfactorily with the Hospital?", new String[] {"Yes","No"});
 		createQuestion(7,"Are you aware that each employee has a unique identification number called the GAA number?",new String[]{"Yes","No"});
-		createQuestion(8,"Is the Hospital certified by NABH/NABL/ISO 9001/EMS/OHSAS?", new String[] {"Can't say","Yes","No"});
+		createQuestion(8,"Is the Hospital certified by NABH/NABL/ISO 9001/EMS/OHSAS?", new String[] {"Yes","No","Can't say"});
 		createQuestion(9,"Is it an employee's responsibility to safeguard the hospital's assests like machines, furniture, medicines etc?",new String[]{"True","False"});
 		
 		createQuestion(11,"All employees must be aware about the hospital's mission & vision statements.", new String[]{"True","False"});
