@@ -15,9 +15,9 @@
 	<div class="container">
 		<div class="row my-auto">
 			<div class="col-md-5 col">
-				<div class="card mt-3">
+				<div class="card mt-2">
 				  <div class="card-header">
-				    <h5>Select Department</h5>
+				    <h6>Select Department</h6>
 				  </div>
 				  <div class="card-body">
 				    <div class="form-group row">
@@ -37,7 +37,7 @@
 				</div>
 			</div>
 			<div class="col-md-7 col">
-				<h4 class="text-center mt-4">Department Feedback Pie Chart</h4>
+				<h5 class="text-center mt-3">Department Feedback Pie Chart</h5>
 				<div class="canvas text-center">
 					
 				</div>
@@ -45,10 +45,10 @@
 		</div>
 		<!-- Row 2 -->
 		<div class="row my-auto">
-			<div class="col-md-5 col mt-3">
+			<div class="col-md-5 col mt-2">
 				<div class="card">
 				  <div class="card-header">
-				    <h5>Department-wise Summary</h5>
+				    <h6>Department-wise Summary</h6>
 				  </div>
 				  <div class="card-body">
 				    	<div class="row">
@@ -68,7 +68,7 @@
 				  </div>
 			</div>
 			<div class="col-md-7 col">
-				<h4 class="text-center mt-4">User Feedback Bar Chart</h4>
+				<h5 class="text-center mt-4">User Feedback Bar Chart</h5>
 				<div class="canvas_bar ml-5 pl-5">
 					
 				</div>
@@ -80,8 +80,9 @@
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<script src="https://d3js.org/d3.v5.min.js"></script>
 	<script src="//d3js.org/d3-scale-chromatic.v0.3.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js">
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js"></script>
+    <script src="https://use.fontawesome.com/80a486f3d9.js"></script>
+   
 	<script src="${pageContext.request.contextPath}/static_resources/js/index.js"></script>
 	<script src="${pageContext.request.contextPath}/static_resources/js/graph.js"></script>
 	<script src="${pageContext.request.contextPath}/static_resources/js/bar_chart.js"></script>
@@ -121,7 +122,18 @@
 				}
 			})
 		}
-		$(document).ready(pie_input).ready(emp_count).ready(bar_chart)
+		$(document)
+			.ready(pie_input)
+			.ready(emp_count)
+			.ready(bar_chart)
+			.ready(e => {
+				$("#home_icon").click( e =>{
+					window.location.href = "admin_panel";
+				});
+				$("#home_icon").hover(() =>{
+					$("#home_icon").css({"cursor":"pointer"});
+				})
+			});
 		$("#btn").on("click",pie_input).on("click",emp_count).on("click",bar_chart);
 	</script>
 </body>

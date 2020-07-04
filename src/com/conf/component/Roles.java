@@ -13,9 +13,11 @@ public class Roles {
 	private String role;
 	@Column(name="active_role")
 	private boolean activeRole;
-	@Column(name="creation_date")
+	
 	@Generated(GenerationTime.INSERT)
+	@Column(name="creation_date",insertable=false, updatable=false)
 	private LocalDate creationDate;
+	
 	@Column(name="created_by")
 	private String createdBy;
 	
@@ -26,11 +28,11 @@ public class Roles {
 	public void setRole(String role) {
 		this.role = role;
 	}
-	public boolean isActive() {
-		return active;
+	public boolean isActiveRole() {
+		return activeRole;
 	}
-	public void setActive(boolean active) {
-		this.active = active;
+	public void setActiveRole(boolean active) {
+		this.activeRole = active;
 	}
 	public LocalDate getCreationDate() {
 		return creationDate;

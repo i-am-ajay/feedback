@@ -4,9 +4,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -26,17 +29,18 @@ public class User{
 	private String password;
 	
 	@Column(nullable=false, name="created_by")
-	@Generated(GenerationTime.INSERT)
 	private String createdBy;
 	
 	@Column(nullable=false)
 	private boolean active;
 	
-	@Column(nullable=false, name="creation_date")
+	@Generated(GenerationTime.INSERT)
+	@Column(nullable=false, insertable=false, updatable=false, name="creation_date")
 	private LocalDate creationDate;
 	
-	@JoinTable(name="roles")
-	@JoinColumn(name="user_id")
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name="roles", joinColumns = {@JoinColumn(name = "user_id")})
+	//@JoinColumn(name="user_id")
 	@Embedded
 	private List<Roles> roleList = new ArrayList<>();
 

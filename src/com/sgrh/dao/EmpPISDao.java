@@ -32,20 +32,14 @@ public class EmpPISDao {
 	
 	@Transactional("PIS")
 	public PISEmployee getEmpFromPis(String empCode){
-		//SessionFactory factory = factoryBean.getObject();
 		Session session = factory.getCurrentSession();
 		PISEmployee emp = session.get(PISEmployee.class, empCode);
 		session.flush();
-		//CriteriaBuilder builder = session.getCriteriaBuilder();
-		//CriteriaQuery<PISEmployee> criteriaQuery = builder.createQuery(PISEmployee.class);
-		//Root<PISEmployee> pisEmployee = criteriaQuery.from(PISEmployee.class);
-		
 		return emp;
 	}
 	
 	@Transactional("PIS")
 	public List<String> getDeptMasterList(){
-		//SessionFactory factory = factoryBean.getObject();
 		Session session = factory.getCurrentSession();
 		CriteriaBuilder builder = session.getCriteriaBuilder();
 		CriteriaQuery<String> criteriaQuery = builder.createQuery(String.class);
@@ -58,7 +52,6 @@ public class EmpPISDao {
 	
 	@Transactional("PIS")
 	public List<String> getDesigList(){
-		//SessionFactory factory = factoryBean.getObject();
 		Session session = factory.getCurrentSession();
 		CriteriaBuilder builder = session.getCriteriaBuilder();
 		CriteriaQuery<String> criteriaQuery = builder.createQuery(String.class);

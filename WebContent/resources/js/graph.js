@@ -1,4 +1,4 @@
-const dimension = {'width':300, 'height':100, 'radius':100};
+const dimension = {'width':230, 'height':80, 'radius':80};
 const cent = {'x':(dimension.width/2 +5), 'y':(dimension.height/2+60)};
 var categorical = [
 	  { "name" : "schemeAccent", "n": 8},

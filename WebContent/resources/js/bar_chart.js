@@ -1,4 +1,4 @@
-const dimension_bar = {'width':500, 'height':200};
+const dimension_bar = {'width':300, 'height':160};
 const margin = {'left':30, 'top': 20, 'right':20,'bottom':20 }
 var categorical_bar = [
 	  { "name" : "schemeAccent", "n": 8},
@@ -18,7 +18,7 @@ var categorical_bar = [
 const svg_bar = d3.select('.canvas_bar')
                 .append('svg')
                 .attr('width', dimension_bar.width + 50)
-                .attr('height',dimension_bar.height + 50);
+                .attr('height',dimension_bar.height+50);
 
 
 const graph_bar = svg_bar.append('g')
@@ -41,7 +41,7 @@ const update_bar = data => {
     // set a scale
     const linear_bar = d3.scaleLinear();
     linear_bar.domain([0,100])
-    .range([200,0]);
+    .range([160,0]);
     
     const band_x = d3.scaleBand();
     band_x

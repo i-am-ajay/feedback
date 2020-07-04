@@ -11,6 +11,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Criteria;
+import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.NativeQuery;
@@ -51,18 +52,15 @@ public class EmployeeFeedback{
 			employee.setDepartment(dept);
 			session.persist(employee);
 		}
-		else {
-			//System.out.println("EmployeeFeedback#createOrGetEmployee List of size"+employee.getFeedbackList().size());
-		}
 		return employee;
 	}
 	
 	@Transactional("feedback")
-	public Employee isEmpFeedbackExists(String emp) {
+	public Employee isEmpFeedbackExists(String emp, LocalDate date) {
 		// Metod will return employee if feedback exists for given date else null.
 		// A filter is used for feedback date in Employee class.
 		Session session = feedbackFactoryBean.getCurrentSession();
-		session.enableFilter("feedback_datewise").setParameter("feedback_date", LocalDate.of(2020, 6, 1));
+		session.enableFilter("feedback_datewise").setParameter("feedback_date", date);
 		Employee employee = session.get(Employee.class, emp);
 		session.disableFilter("feedback_datewise");
 		return employee;
@@ -81,7 +79,6 @@ public class EmployeeFeedback{
 			Session session = factory.getCurrentSession();
 			Map<Integer,Questions> questionBank = QuestionBank.getInstance().getQuestionMap();
 			for(Integer in: questionBank.keySet()) {
-				//System.out.println(questionBank.get(in).getChoices().get(0));
 				session.save(questionBank.get(in));
 				session.flush();
 			}
@@ -89,7 +86,7 @@ public class EmployeeFeedback{
 	}
 	
 	@Transactional("feedback")
-	private Employee getEmployee(String empCode) {
+	private Employee getEmployee(String empCode,LocalDate date) {
 		//SessionFactory factory = feedbackFactoryBean.getObject();
 		SessionFactory factory = feedbackFactoryBean;
 		Session session = factory.getCurrentSession();
@@ -98,6 +95,8 @@ public class EmployeeFeedback{
 		Root<Employee> from = criteriaQuery.from(Employee.class);
 		criteriaQuery.where(builder.equal(from.get("empCode"), empCode));
 		TypedQuery<Employee>query = session.createQuery(criteriaQuery);
+		Filter filter = session.enableFilter("feedback_datewise");
+		filter.setParameter("feedback_date", date);
 		Employee employee;
 		try {
 			employee = query.getSingleResult();
@@ -105,12 +104,12 @@ public class EmployeeFeedback{
 		catch(NoResultException ex) {
 			employee = null;
 		}
+		session.disableFilter("feedback_datewise");
 		return employee;
 	}
 	
 	@Transactional("feedback")
 	public int addFeedback(Employee employee) {
-		//System.out.println("Beginning Add Feedback method");
 		Feedback feedback = new Feedback();
 		feedback.setFeedbackPeriod(LocalDate.now().withDayOfMonth(1));
 		for(Integer i: QuestionBank.getInstance().getQuestionMap().keySet()){
@@ -191,6 +190,19 @@ public class EmployeeFeedback{
 		Session session = feedbackFactoryBean.getCurrentSession();
 		User user = session.get(User.class, userName);
 		return user;
+	}
+	
+	@Transactional("feedback")
+	public boolean saveUser(User user) {
+		User tempUser = getUser(user.getUsername());
+		boolean isUserCreated = false;
+		if(tempUser == null) {
+			Session session = feedbackFactoryBean.getCurrentSession();
+			session.save(user);
+			session.flush();
+			isUserCreated = true;
+		}
+		return isUserCreated;
 	}
 	
 }

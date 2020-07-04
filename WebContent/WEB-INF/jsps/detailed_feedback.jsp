@@ -9,6 +9,7 @@
 <title>Feedback Details</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <link rel="stylesheet" href = "https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body class=mt-1>
 	<%@ include file = "header.jsp" %>
@@ -37,6 +38,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 	<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+	<script src="https://use.fontawesome.com/80a486f3d9.js"></script>
 	<script>
 		let pie_data = {};
 		let counter = 0;
@@ -128,7 +130,15 @@
 				}
 			})
 		}
-		$(document).ready(feedback_details);
+		$(document).ready(feedback_details).ready(e =>{
+			$("#home_icon").click(e =>{
+				window.location.href="graphs";
+			}).hover( e => {
+				$("#home_icon").css({
+					"cursor":"pointer"
+				});
+			});
+		});
 		$("#btn").on("click",tableDepartmentWise);
 		</script>
 </body>

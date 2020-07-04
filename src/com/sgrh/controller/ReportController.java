@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -54,7 +56,6 @@ public class ReportController {
 	public @ResponseBody String summary(@RequestParam(name="dept") String dept) {
 		long totalCount = reportService.empCount(dept);
 		long feedbackCount = reportService.feedbackCount(dept, LocalDate.of(2020, 6, 1));
-		System.out.println(feedbackCount);
 		//long totalCount = 10000;
 		JSONObject obj = new JSONObject();
 		obj.put("total", totalCount);
@@ -84,8 +85,11 @@ public class ReportController {
 	}
 	
 	@RequestMapping(value ="graphs",method=RequestMethod.GET)
-	public ModelAndView showGraph(Map<String,Object> model){
+	public ModelAndView showGraph(Map<String,Object> model,HttpSession session){
 		// fetch dept list and add to model attribute.
+		if(session.getAttribute("username") == null || session.getAttribute("username").toString().length() == 0) {
+			return new ModelAndView("login");
+		}
 		List<String> list = pisService.getDeptList();
 		model.put("deptList",list);
 		// fetch a summary of of user feedback and return a json object. 
@@ -97,7 +101,10 @@ public class ReportController {
 	}
 	
 	@RequestMapping(value= "details")
-	public ModelAndView detailsFeedbackPage(Map<String,Object> model) {
+	public ModelAndView detailsFeedbackPage(Map<String,Object> model,HttpSession session) {
+		if(session.getAttribute("username") == null || session.getAttribute("username").toString().length() == 0) {
+			return new ModelAndView("login");
+		}
 		List<String> list = pisService.getDeptList();
 		
 		model.put("deptList",list);
@@ -117,9 +124,6 @@ public class ReportController {
 			JSONObject obj = new JSONObject();
 			obj.put(k,v);
 			listJsonObject.add(obj);
-		});
-		listJsonObject.forEach((v) ->{
-			System.out.println(v.toString());
 		});
 		return Arrays.toString(listJsonObject.toArray(new JSONObject[listJsonObject.size()]));
 	}
