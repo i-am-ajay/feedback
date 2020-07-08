@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.conf.component.CurrentFeedbackDate;
 import com.conf.component.Employee;
 import com.conf.component.Roles;
 import com.conf.component.User;
@@ -72,5 +73,13 @@ public class EmployeeFeedbackService {
 		user.setCreatedBy(createdBy);
 		user.setActive(true);
 		return empFeedback.saveUser(user);
+	}
+	
+	public boolean saveCurrentDate(LocalDate date, int duration) {
+		return empFeedback.setCurrentFeedbackDate(date, duration);
+	}
+	
+	public CurrentFeedbackDate getCurrentFeedbackDate() {
+		return empFeedback.getCurrentFeedbackDate();
 	}
 }

@@ -1,11 +1,13 @@
 package com.sgrh.controller;
 
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.conf.component.CurrentFeedbackDate;
 import com.conf.component.Employee;
 import com.conf.component.Feedback;
 import com.conf.component.Roles;
@@ -32,6 +35,9 @@ import com.sgrh.service.ReportService;
 @Controller
 @SessionAttributes({"emp"})
 public class MainController{
+	
+	private LocalDate feedbackDate;
+	int duration;
 	@Autowired
 	EmployeeFeedbackService eFS;
 	@Autowired
@@ -45,6 +51,7 @@ public class MainController{
 	int feedbackId;
 	
 	Employee emp;
+	private LocalDate feedbackEndDate;
 	
 	// User authentication related.
 	@RequestMapping("signup")
@@ -122,24 +129,35 @@ public class MainController{
 		}
 		String landingPage = "";
 		// feedback already submitted by user.
-		LocalDate date = LocalDate.of(2020, 6, 1);
-		if(eFS.isFeedbackExists(empInit.getEmpCode(), date)) {
-			model.addAttribute("submitted",false);
-			landingPage = "form_submitted";
+		if(LocalDate.now().equals(this.feedbackEndDate) || LocalDate.now().isBefore(feedbackEndDate)) {
+			LocalDate date = this.feedbackDate;
+			if(eFS.isFeedbackExists(empInit.getEmpCode(), date)) {
+				model.addAttribute("submitted","repeat");
+				landingPage = "form_submitted";
+			}
+			// generate a feedback page.
+			else{
+				eFS.generatedQuestions();
+				empGlobal = eFS.startEmployeeFeedback(empInit.getEmpCode(), empInit.getDepartment(), empInit.getDesignation());
+				eFS.saveFeedback(empGlobal);
+				model.addAttribute("emp", empGlobal);
+				model.addAttribute("submitted","success");
+				landingPage = "feedback";
+			}
 		}
-		// generate a feedback page.
 		else {
-			eFS.generatedQuestions();
-			empGlobal = eFS.startEmployeeFeedback(empInit.getEmpCode(), empInit.getDepartment(), empInit.getDesignation());
-			eFS.saveFeedback(empGlobal);
-			model.addAttribute("emp", empGlobal);
-			landingPage = "feedback";
+			model.addAttribute("submitted","overdate");
+			model.addAttribute("end_date",feedbackEndDate);
+			landingPage = "form_submitted";
 		}
 		return landingPage;
 	}
 	
 	@RequestMapping(value = "submit_form", method=RequestMethod.POST)
-	public String formSubmission(Model model, @ModelAttribute("emp") Employee emp){
+	public String formSubmission(Model model, @ModelAttribute("emp") Employee emp, HttpSession session){
+		if(session.getAttribute("username") == null || session.getAttribute("username").toString().length() == 0) {
+			return "login";
+		}
 		eFS.updateFeeback(emp);
 		model.addAttribute("submitted",true);
 		return "form_submitted";
@@ -147,12 +165,15 @@ public class MainController{
 	
 	@RequestMapping(value="admin_panel")
 	public String adminPanel(Model model,HttpSession session) {
+		if(session.getAttribute("username") == null || session.getAttribute("username").toString().length() == 0) {
+			return "login";
+		}
 		model.addAttribute("username",session.getAttribute("username").toString());
 		return "admin_panel";
 	}
 	
 	// Error Handling request
-	@ExceptionHandler
+	@ExceptionHandler(Exception.class)
 	public String handleAnyError(Model model, HttpSession session) {
 		String page = "redirect:login";
 		String role = session.getAttribute("role").toString();
@@ -163,5 +184,43 @@ public class MainController{
 			page = "redirect:admin_panel";
 		}
 		return page;
+	}
+	
+	@RequestMapping("start_feedback")
+	public String feedbackGenerator(Model model, HttpSession session) {
+		if(session.getAttribute("username") == null || session.getAttribute("username").toString().length() == 0) {
+			return "login";
+		}
+		model.addAttribute("date",feedbackDate);
+		model.addAttribute("duration",duration);
+		model.addAttribute("endDate",feedbackEndDate);
+		return "feedback_generator";
+	}
+	
+	@RequestMapping("generate_feedback_month")
+	public String generateCurrentFeedback(@RequestParam("date") int month, @RequestParam("duration")int duration,HttpSession session) {
+		if(session.getAttribute("username") == null || session.getAttribute("username").toString().length() == 0) {
+			return "login";
+		}
+		int year = LocalDate.now().getYear();
+		LocalDate date = LocalDate.of(year, month, 1);
+		
+		boolean flag = eFS.saveCurrentDate(date, duration);
+		if(flag) {
+			feedbackDate = date;
+			this.duration = duration;
+			feedbackEndDate = date.plusMonths(duration).with(TemporalAdjusters.lastDayOfMonth());
+		}
+		return "redirect:start_feedback";
+	}
+	
+	@PostConstruct
+	public void getCurrentDate() {
+		CurrentFeedbackDate date = eFS.getCurrentFeedbackDate();
+		if(date != null) {
+			this.feedbackDate = eFS.getCurrentFeedbackDate().getFeedbackDate();
+			this.duration = eFS.getCurrentFeedbackDate().getDuration();
+			this.feedbackEndDate = eFS.getCurrentFeedbackDate().getFeedbackEndDate();
+		}
 	}
 }

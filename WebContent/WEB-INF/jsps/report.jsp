@@ -23,7 +23,7 @@
 				    <div class="form-group row">
 					<label for="dept" class="control-label font-weight-bold col-6 col-md-4 text-center my-auto">
 						Department<small class="text-danger">*</small></label>
-					<input list="deptList" class="form-control form-control col-6 col-md-8"
+					<input list="deptList" class="form-control form-control-sm col-6 col-md-8"
 						id="dept" name="dept" placeholder="Department" />
 					<datalist id="deptList">
 						<c:forEach var="item" items="${deptList}">

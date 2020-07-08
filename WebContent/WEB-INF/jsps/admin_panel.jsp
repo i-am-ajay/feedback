@@ -13,29 +13,53 @@
 </head>
 <body>
 	<%@ include file = "header.jsp" %>
-	<div class="container mt-3">
-	<div class="row mt-5">
-		<div class="card bg-light col-sm-12 col-md-4 my-1 mx-3 py-1" id="create_user">
-		<article class="card-body mx-auto">
-			<h4 class="card-title text-center display-4 border-bottom border-danger py-2 my-3">Create User</h4>
-			<p class="text-center mt-4"><i class="fa fa-user-circle fa-3x" aria-hidden="true"></i></p>
-		</article>
+	<div class="container mt-4">
+	<div class="row mt-3">
+		<div class="col-sm-12 col-md-4">
+			<div class="card bg-light mx-2 my-1 py-1" id="create_user">
+			<article class="card-body mx-auto">
+				<h4 class="card-title text-center display-4 border-bottom border-danger py-2 my-2">Create User</h4>
+				<p class="text-center mt-3"><i class="fa fa-user-circle fa-3x" aria-hidden="true"></i></p>
+			</article>
+			</div>
 		</div>
-		<div class="card bg-light col-sm-12 col-md-4 my-1 mx-3 py-1" id="graphs">
-		<article class="card-body mx-auto">
-			<h4 class="card-title text-center display-4 border-bottom border-danger py-2 my-3">Analysis</h4>
-			<p class="text-center mt-4"><i class="fa fa-line-chart fa-3x" aria-hidden="true"></i></p>
-		</article>
+		<div class=" col-sm-12 col-md-4">
+			<div class="card bg-light my-1 py-1" id="graphs">
+			<article class="card-body mx-auto">
+				<h4 class="card-title text-center display-4 border-bottom border-danger py-2 my-2">Analysis</h4>
+				<p class="text-center mt-3"><i class="fa fa-line-chart fa-3x" aria-hidden="true"></i></p>
+			</article>
+			</div>
 		</div>
-		
-		<div class="card bg-light col-md-4 my-1 mx-3 py-1" id="feedback">
-		<article class="card-body mx-auto">
-			<h4 class="card-title text-center display-4 border-bottom border-danger py-2 my-3">Feedback</h4>
-			<p class="text-center mt-4"><i class="fa fa-comments-o fa-3x" aria-hidden="true"></i></p>	
-		</article>
+		<div class="col-sm-12 col-md-4">
+			<div class="card bg-light my-1 py-1" id="feedback">
+			<article class="card-body mx-auto">
+				<h4 class="card-title text-center display-4 border-bottom border-danger py-2 my-2">Feedback</h4>
+				<p class="text-center mt-3"><i class="fa fa-comments-o fa-3x" aria-hidden="true"></i></p>	
+			</article>
+			</div>
 		</div>
 	</div>
+	
+	<div class="row mt-4">
+		<div class="col-sm-12 col-md-4">
+		</div>
+		<div class=" col-sm-12 col-md-4">
+			<div class="card bg-light my-1 py-1" id="duration">
+			<article class="card-body mx-auto">
+				<h4 class="card-title text-center display-4 border-bottom border-danger py-2 my-2">Duration</h4>
+				<p class="text-center mt-3"><i class="fa fa-clock-o fa-3x" aria-hidden="true"></i></i></p>
+			</article>
+			</div>
+		</div>
+		<div class="col-sm-12 col-md-4">
+		</div>
+	</div>
+	
 	</div> 
+	
+	
+	
 	<!--container end.//-->
 	<script src="https://use.fontawesome.com/80a486f3d9.js"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -58,6 +82,10 @@
 		// go to feedback
 		$("#feedback").click( e=>{
 			window.location.href ="home";
+		});
+
+		$("#duration").click( e=>{
+			window.location.href ="start_feedback";
 		});
 
 		$(document).ready( e=>{

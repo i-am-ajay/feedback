@@ -1,10 +1,12 @@
 package com.sgrh.dao;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -23,6 +25,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ajay.others.QuestionBank;
+import com.conf.component.CurrentFeedbackDate;
 import com.conf.component.Dept;
 import com.conf.component.Employee;
 import com.conf.component.EmployeeChoice;
@@ -205,4 +208,48 @@ public class EmployeeFeedback{
 		return isUserCreated;
 	}
 	
+	@Transactional("feedback")
+	public boolean setCurrentFeedbackDate(LocalDate startDate, int duration) {
+		LocalDate endDate = startDate.plusMonths(duration);
+		Session session = feedbackFactoryBean.getCurrentSession();
+		String queryString = "FROM CurrentFeedbackDate WHERE feedbackEndDate > :startDate AND open=true ";
+		TypedQuery<CurrentFeedbackDate> selectionQuery = session.createQuery(queryString,CurrentFeedbackDate.class); 
+		selectionQuery.setParameter("startDate", startDate);
+		List<CurrentFeedbackDate> feedbackDateList = selectionQuery.getResultList();
+		if(feedbackDateList.size() > 0) {
+			return false;
+		}
+		String updateString = "UPDATE CurrentFeedbackDate SET isOpen = 0 WHERE isOpen = 1";
+		Query updateQuery = session.createQuery(updateString);
+		updateQuery.executeUpdate();
+		session.flush();
+	    System.out.println("Update Done");
+		String insertString = "INSERT INTO current_feedback (feedback_date, duration, end_date,isopen ) VALUES (?, ?, ?,true)";
+		NativeQuery insertQuery = session.createNativeQuery(insertString);
+		insertQuery.setParameter(1, startDate);
+		insertQuery.setParameter(2, duration);
+		insertQuery.setParameter(3, endDate);
+		System.out.println("Before Update");
+		int val = insertQuery.executeUpdate();
+		if(val > 0) {
+			return true;
+		}
+		System.out.println("After update");
+		return false;
+	}
+	
+	@Transactional("feedback")
+	public CurrentFeedbackDate getCurrentFeedbackDate(){
+		Session session = feedbackFactoryBean.getCurrentSession();
+		String queryString = "FROM CurrentFeedbackDate WHERE open=true";
+		TypedQuery<CurrentFeedbackDate> selectionQuery = session.createQuery(queryString, CurrentFeedbackDate.class);
+		CurrentFeedbackDate obj = null;
+		try {
+			obj = selectionQuery.getSingleResult();
+		}
+		catch(RuntimeException ex) {
+			obj = null;
+		}
+		return obj;
+	}
 }

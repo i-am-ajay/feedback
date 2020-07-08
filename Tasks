@@ -3,4 +3,17 @@ Reports:
 * For summary, pull total employees in dept from pis and total employees in feedback system 
 	and show how many employee are there and how many have inserted feedback.
 	
-* 
+
+	------------  2020-7-7  ----------------
+	
+	
+	* Add date to the feedback
+		* Close previously open feedback. And starts a new for the given time period. : Done 2:26 PM on 2020-07-07
+		* Set this new feedback date in current_feedback_date variable of the the project. Done 2:26 PM on 2020-07-07
+		* When user adding a feedback, check if user has already given a feedback for the current feedback. Done 3:55 PM on 2020-07-07
+	
+	* Add an option for date range to the feedback analysis.
+	
+Optional Choice:
+
+	* Stop user from adding a feedback if there is an ongoing feedback.
