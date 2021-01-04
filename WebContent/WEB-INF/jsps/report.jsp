@@ -21,17 +21,29 @@
 				  </div>
 				  <div class="card-body">
 				    <div class="form-group row">
-					<label for="dept" class="control-label font-weight-bold col-6 col-md-4 text-center my-auto">
-						Department<small class="text-danger">*</small></label>
-					<input list="deptList" class="form-control form-control-sm col-6 col-md-8"
-						id="dept" name="dept" placeholder="Department" />
-					<datalist id="deptList">
-						<c:forEach var="item" items="${deptList}">
-							<option><c:out value="${item}" /></option>
-						</c:forEach>
-					</datalist>
-				</div>
-				    <a href="#" class="btn btn-primary btn-block w-75 mx-auto mt-5" id="btn">Show Graph</a>
+						<label for="dept" class="control-label font-weight-bold col-6 col-md-4 text-right my-auto">
+							Department<small class="text-danger">*</small></label>
+						<input list="deptList" class="form-control form-control-sm col-6 col-md-8"
+							id="dept" name="dept" placeholder="Department" />
+						<datalist id="deptList">
+							<c:forEach var="item" items="${deptList}">
+								<option><c:out value="${item}" /></option>
+							</c:forEach>
+						</datalist>
+					</div>
+					<div class="form-group row">
+						<label for="dept" class="control-label font-weight-bold col-6 col-md-4 text-right my-auto">
+							Start Date</label>
+						<input type="date" class="form-control form-control-sm col-6 col-md-8"
+							id="start" name="start_date"/>
+					</div>
+					<div class="form-group row">
+						<label for="dept" class="control-label font-weight-bold col-6 col-md-4 text-right my-auto">
+							End Date</label>
+						<input type="date" class="form-control form-control-sm col-6 col-md-8"
+							id="end" name="end_date"/>
+					</div>
+				    <a href="#" class="btn btn-primary btn-block w-75 mx-auto mt-2" id="btn">Show Graph</a>
 				    <input type="hidden" id="hidden" value="" />
 				  </div>
 				</div>

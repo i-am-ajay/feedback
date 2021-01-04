@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sgrh.service.EmployeeFeedbackService;
@@ -24,7 +25,10 @@ import com.sgrh.service.PISService;
 import com.sgrh.service.ReportService;
 
 @Controller
+@SessionAttributes()
 public class ReportController {
+	
+	private LocalDate startDate;
 	@Autowired
 	private PISService pisService;
 
