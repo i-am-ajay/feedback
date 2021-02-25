@@ -64,7 +64,7 @@ public class ReportDao {
 			empCodeQuery.setParameter("dept", dept);
 			query = session.createNativeQuery("SELECT count(DISTINCT emp_id) FROM feedback WHERE 1=1 AND "
 					+ " feedback_Date = :date AND emp_id IN (:emplist)");
-			query.setParameter("date", date.withDayOfMonth(1));
+			query.setParameter("date", date);
 			query.setParameter("emplist", empCodeQuery.getResultList());
 		}
 		else {
@@ -77,17 +77,29 @@ public class ReportDao {
 		return i.intValue();
 	}
 	
+	/**
+	 * Calls a stored procedure that return a user with count of positive, negative and neutral answers for a 
+	 * particular feedback.
+	 * @param department
+	 * @param date
+	 * @return
+	 */
 	@Transactional("feedback")
 	public List<Object[]> empList(String department, LocalDate date){
 		Session session = sessionFactory.getCurrentSession();
-		NativeQuery query = session.createNativeQuery(getQuery(department,date));
-		if(department != null && department.length() > 0){
+		if(department == null || department.length() == 0) {
+			department = null;
+		}
+		NativeQuery query = session.createNativeQuery("CALL user_feedback_summary(:sdate, :dept)");
+		query.setParameter("dept", department);
+		query.setParameter("sdate", date);
+		/*if(department != null && department.length() > 0){
 			query.setParameter("dept", department);
 			query.setParameter("date", date);
 		}
 		else {
 			query.setParameter("date", date);
-		}
+		}*/
 		return query.getResultList();
 	}
 	
@@ -123,16 +135,17 @@ public class ReportDao {
 		return query;
 	}
 	
+	// Find count of positive, negative and neutral answer for each question.
 	@Transactional("feedback")
 	public List<Object[]> feedbackDetails(String dept, LocalDate date){
 		Session session = sessionFactory.getCurrentSession();
 		NativeQuery query = session.createNativeQuery(feedbackDetailsQuery(dept));
 		if ((dept != null) && (dept.length() > 0)) {
-			query.setParameter("date", LocalDate.of(2020, 6, 1));
+			query.setParameter("date", date);
 			query.setParameter("dept", dept);
 		}
 		else {
-			query.setParameter("date", LocalDate.of(2020, 6, 1));
+			query.setParameter("date", date);
 		}
 		return query.getResultList();
 	}

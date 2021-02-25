@@ -67,37 +67,26 @@ public class ReportService {
 	}
 	
 	private void feedbackAnalysis(HashMap<String,Integer> map, Object[] obj, int finalCount) {
-		String feedbackType = (String)obj[1];
-		BigInteger value = (BigInteger)obj[2];
+		BigInteger positiveCount = (BigInteger)obj[1];
+		BigInteger neutralCount = (BigInteger)obj[2];
+		BigInteger negativeCount = (BigInteger)obj[3];
 		
-		float percentage = ((float)value.intValue() / (float)finalCount) * 100;
-		if(feedbackType != null) {
-			if(feedbackType.equals("Positive")) {
-				if(percentage >= 80) {
-					map.put("Very Positive", map.get("Very Positive")+1);
-				}
-				else if(percentage > 49 && percentage < 80) {
-					map.put("Positive", map.get("Positive")+1);
-				}
-				else {
-					map.put("Neutral", map.get("Neutral")+1);
-				}
-			}
-			else if(feedbackType == "Neutral"){
-				map.put("Neutral", map.get("Neutral")+1);
-			}
-			else if(feedbackType == "Negative"){
-				if(percentage >= 70) {
-					map.put("Very Negative", map.get("Very Negative")+1);
-				}
-				else if(percentage > 49 && percentage < 70) {
-					map.put("Negative", map.get("Negative")+1);
-				}
-				else {
-					map.put("Neutral", map.get("Neutral")+1);
-				}
-			}
-		}
+		float positivePercentage = ((float)positiveCount.intValue() / (float)finalCount) * 100;
+		float neutralPercentage  =((float)neutralCount.intValue() / (float)finalCount) * 100;
+		float negativePercentage = ((float)negativeCount.intValue() / (float) finalCount) * 100;
+		
+		if(positivePercentage >= 80 )
+			map.put("Very Positive", map.get("Very Positive")+1);
+		else if(positivePercentage >=60 && positivePercentage<80)
+			map.put("Positive", map.get("Positive")+1);
+		else if(negativePercentage >= 80)
+			map.put("Very Negative", map.get("Very Negative")+1);
+		else if(negativePercentage >= 60 && negativePercentage < 80)
+			map.put("Negative",map.get("Negative")+1);
+		else if((positivePercentage >=40 && positivePercentage <60) || (negativePercentage >= 40 && negativePercentage < 60))
+			map.put("Neutral", map.get("Neutral")+1);
+		else if(neutralPercentage > 33)
+			map.put("Neutral", map.get("Neutral")+1);
 	}
 	
 	public Map<String,Long> convertUserInput(List<String[]> summaryList){

@@ -1,7 +1,9 @@
 package com.conf.component;
 
+
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CollectionTable;
@@ -13,6 +15,8 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Generated;
@@ -20,7 +24,7 @@ import org.hibernate.annotations.GenerationTime;
 import org.springframework.stereotype.Component;
 
 @Entity
-@Table(name="users")
+@Table(name="user")
 public class User{
 	@Id
 	private String username;
@@ -28,21 +32,18 @@ public class User{
 	@Column(nullable=false)
 	private String password;
 	
-	@Column(nullable=false, name="created_by")
-	private String createdBy;
+	@ManyToOne
+	@JoinColumn(name="created_by")
+	private User createdBy;
 	
 	@Column(nullable=false)
 	private boolean active;
 	
-	@Generated(GenerationTime.INSERT)
-	@Column(nullable=false, insertable=false, updatable=false, name="creation_date")
+	@Column(name="creation_date")
 	private LocalDate creationDate;
 	
-	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name="roles", joinColumns = {@JoinColumn(name = "user_id")})
-	//@JoinColumn(name="user_id")
-	@Embedded
-	private List<Roles> roleList = new ArrayList<>();
+	private String role;
+	
 
 	public String getUsername() {
 		return username;
@@ -60,11 +61,11 @@ public class User{
 		this.password = password;
 	}
 
-	public String getCreatedBy() {
+	public User getCreatedBy() {
 		return createdBy;
 	}
 
-	public void setCreatedBy(String createdBy) {
+	public void setCreatedBy(User createdBy) {
 		this.createdBy = createdBy;
 	}
 
@@ -84,11 +85,11 @@ public class User{
 		this.creationDate = creationDate;
 	}
 
-	public List<Roles> getRoleList() {
-		return roleList;
+	public String getRole(){
+		return role;
 	}
 
-	public void setRoleList(List<Roles> roleList) {
-		this.roleList = roleList;
+	public void setRole(String role) {
+		this.role = role;
 	}
 }

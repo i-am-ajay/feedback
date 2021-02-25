@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -24,15 +26,21 @@ public class IncrementController {
 	IncrementService incrementService;
 	
 	Map<String, String> romanNumericMap;
+	List<String> listMonth;
 	
 	//------------------------------------- Increment Details --------------------------------------------
 	@RequestMapping("due_increment")
-	public String incrementDetails(Model model, @RequestParam(name="month", required=false)String date) {
-		date = "December-2020";
-		if(date != null) {
-			String[] monthYear = date.split("-");
-			int year = Integer.valueOf(monthYear[1]);
-			Month month = Month.valueOf(monthYear[0].toUpperCase());
+	public String incrementDetails(Model model, @RequestParam(name="month", required=false)String monthStr,
+			@RequestParam(name="year", required=false, defaultValue="0")int year) {
+		//date = "December-2020";
+		model.addAttribute("month",getMonth());
+		model.addAttribute("current_month", YearMonth.now().getMonth().toString());
+		YearMonth now = YearMonth.now(); 
+		model.addAttribute("year",new int[] {now.getYear(),now.getYear()-1});
+		System.out.println(monthStr);
+		System.out.println(year);
+		if(monthStr != null) {
+			Month month = Month.valueOf(monthStr.trim());
 			YearMonth yearMonth = YearMonth.of(year, month);
 			LocalDate startDate = yearMonth.atDay(1);
 			LocalDate endDate = yearMonth.atEndOfMonth();
@@ -45,7 +53,10 @@ public class IncrementController {
 			}
 			
 			model.addAttribute("emp_list",updatedList);
+			model.addAttribute("current_month", monthStr);
+			model.addAttribute("current_year",year);
 		}
+		model.addAttribute("status","success");
 		return "increment_process";
 	}
 
@@ -53,12 +64,10 @@ public class IncrementController {
 
 //----------------------------------------------- Utility Method -------------------------------------------------
 	public double newBasicFromPayMatrix(String basic, String level, Map<Integer,List<Double>> paymatrixMap ) {
-		System.out.println("LEVEL " +level + "BASIC "+basic);
-		int levelNum = Integer.valueOf(getLevel(level));
+		//int levelNum = Integer.valueOf(getLevel(level));
 		double amount = 0.0;
-		List<Double> payband = paymatrixMap.get(levelNum);
+		List<Double> payband = paymatrixMap.get(Integer.parseInt(level));
 		int index = payband.indexOf(Double.valueOf(basic));
-		System.out.println(index);
 		if(index != -1) {
 			index = (index == payband.size()) ? index : index + 1; 
 			amount = payband.get(index);
@@ -66,9 +75,8 @@ public class IncrementController {
 		return  amount;
 	}
 	
-	@PostConstruct
+	/*@PostConstruct
 	public void levelMap() {
-		System.out.println("Initializing map");
 		romanNumericMap = new HashMap<>();
 		romanNumericMap.put("I", "1");
 		romanNumericMap.put("II", "2");
@@ -84,13 +92,32 @@ public class IncrementController {
 		romanNumericMap.put("XII", "12");
 		romanNumericMap.put("Consolidated", "2");
 		
-	}
+	}*/
 	
 	public String getLevel(String roman) {
 		
 		return romanNumericMap.get(roman) != null ? romanNumericMap.get(roman) : "0";
 	}
+	
+	public List<String> getMonth() {
+		if(listMonth == null || listMonth.size() <= 0) {
+			listMonth = new ArrayList<>();
+			Month[] month = Month.values();
+			Arrays.stream(month).forEach(e ->{
+				listMonth.add(e.toString());
+			});
+		}
+		return listMonth;
+	}
 
 //----------------------------------------------- End Utility Method ---------------------------------------------
 
+//----------------------------------------------- Exception Handling -------------------------------------------
+	@ExceptionHandler(Exception.class)
+	public String errorHandler(Model model) {
+		model.addAttribute("status","failed");
+		return "increment_process";
+	}
+	
+//----------------------------------------------End Exception Handling --------------------------------------------
 }

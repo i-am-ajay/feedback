@@ -68,7 +68,7 @@ const update = data => {
     // remove present dom.
     paths.exit().remove();
     // update present dom.
-    paths.attr('d',archPath);
+    paths.attr('d',archPath).transition();
  
     // enter new dom.
     paths.enter().append('path')

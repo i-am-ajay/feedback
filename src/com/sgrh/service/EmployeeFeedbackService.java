@@ -1,6 +1,7 @@
 package com.sgrh.service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -27,7 +28,11 @@ public class EmployeeFeedbackService {
 	}
 	
 	public boolean isFeedbackExists(String empcode,LocalDate date) {
-		Employee emp = empFeedback.isEmpFeedbackExists(empcode, date);
+		List<Employee> empList = empFeedback.isEmpFeedbackExists(empcode, date);
+		Employee emp = null;
+		if(empList != null && empList.size() > 0) {
+			emp = empList.get(0);
+		}
 		boolean feedbackExists = false;
 		if(emp != null) {
 			feedbackExists = true;
@@ -35,9 +40,9 @@ public class EmployeeFeedbackService {
 		return feedbackExists;
 	}
 	
-	public Employee startEmployeeFeedback(String empCode, String dept, String designation) {
+	public Employee startEmployeeFeedback(String empCode, String dept, String designation, LocalDate feedbackDate) {
 		Employee emp = empFeedback.createOrGetEmployee(empCode, dept, designation);
-		int id = empFeedback.addFeedback(emp);
+		int id = empFeedback.addFeedback(emp, feedbackDate);
 		emp.setCurrentFeedbackId(id);
 		return emp;
 	}
@@ -58,21 +63,6 @@ public class EmployeeFeedbackService {
 		else {
 			return null;
 		}
-	}
-	
-	public boolean createUser(String username, String password, String role, String createdBy) {
-		User user = new User();
-		Roles roles = new Roles();
-		roles.setRole(role);
-		roles.setCreatedBy(createdBy);
-		roles.setActiveRole(true);
-		
-		user.setUsername(username);
-		user.setPassword(password);
-		user.getRoleList().add(roles);
-		user.setCreatedBy(createdBy);
-		user.setActive(true);
-		return empFeedback.saveUser(user);
 	}
 	
 	public boolean saveCurrentDate(LocalDate date, int duration) {
