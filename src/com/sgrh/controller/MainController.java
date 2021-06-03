@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.conf.component.CurrentFeedbackDate;
 import com.conf.component.Employee;
+import com.conf.component.Feedback;
 import com.sgrh.service.EmployeeFeedbackService;
 import com.sgrh.service.PISService;
 import com.sgrh.service.ReportService;
@@ -42,6 +43,7 @@ public class MainController{
 	int feedbackId;
 	
 	Employee emp;
+	
 	private LocalDate feedbackEndDate;
 	
 	// User authentication related.
@@ -74,9 +76,13 @@ public class MainController{
 			// generate a feedback page.
 			else{
 				eFS.generatedQuestions();
-				empGlobal = eFS.startEmployeeFeedback(empInit.getEmpCode(), empInit.getDepartment(), empInit.getDesignation(), this.feedbackDate);
-				eFS.saveFeedback(empGlobal);
+				Feedback feedback = eFS.startEmployeeFeedback(empInit.getEmpCode(), empInit.getDepartment(), empInit.getDesignation(), this.feedbackDate);
+				//eFS.saveFeedback(empGlobal);
+				System.out.println(feedback.getChoiceList().size());
+				System.out.println(feedback.getCreationDate());
+				empGlobal = empInit;
 				model.addAttribute("emp", empGlobal);
+				model.addAttribute("feed_obj",feedback);
 				model.addAttribute("submitted","success");
 				landingPage = "feedback";
 			}
@@ -90,11 +96,12 @@ public class MainController{
 	}
 	
 	@RequestMapping(value = "submit_form", method=RequestMethod.POST)
-	public String formSubmission(Model model, @ModelAttribute("emp") Employee emp, HttpSession session){
+	public String formSubmission(Model model, @ModelAttribute("feed_obj") Feedback feedback, HttpSession session){
 		if(session.getAttribute("username") == null || session.getAttribute("username").toString().length() == 0) {
 			return "login";
 		}
-		eFS.updateFeeback(emp);
+		feedback.setFeedbackPeriod(this.feedbackDate);
+		eFS.saveFeedback(empGlobal,feedback);
 		model.addAttribute("submitted",true);
 		return "form_submitted";
 	}

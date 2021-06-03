@@ -46,7 +46,7 @@ public class Employee {
 	private int currentFeedbackId;
 	
 	@OneToMany(mappedBy="employee", cascade= {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH},fetch=FetchType.EAGER)
-	@OrderBy(clause = "id ASC")
+	@OrderBy(clause = "id DESC")
 	@Filter(name = "feedback_datewise", condition = "feedback_date = :feedback_date")
 	List<Feedback> feedbackList = new ArrayList<>();
 	

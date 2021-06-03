@@ -18,13 +18,13 @@
 	<div class="bg-light m-2 border-secondary mt-5">
 	<c:choose> 
 		<c:when test="${submitted == 'repeat'}">
-			<h4 class="m-3 mt-2 pb-2">Dear Employee!! Your feedback has been submitted to HR, thanks for your time and valuable feedback.</h4>
+			<h4 class="m-3 mt-2 pb-2">Dear Employee!! Your feedback has already been submitted to HR, you are not allowed to resubmit this feedback.</h4>
 		</c:when>
 		<c:when test="${submitted =='overdate'}">
 			<h4 class="m-3 mt-2 pb-2">Dear Employee!! This feedback submission date is over. Last Day to submit feedback was ${end_date}, no feedback can be submitted.</h4>
 		</c:when>
 		<c:otherwise>
-			<h4 class="m-3 mt-2 pb-2">Dear Employee!! Your feedback has already been submitted to HR, you are not allowed to resubmit this feedback.</h4>
+			<h4 class="m-3 mt-2 pb-2">Dear Employee!! Your feedback has been submitted to HR, thanks for your time and valuable feedback.</h4>
 		</c:otherwise>
 	</c:choose>
 	<div>

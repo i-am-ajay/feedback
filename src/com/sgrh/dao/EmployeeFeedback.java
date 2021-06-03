@@ -65,7 +65,6 @@ public class EmployeeFeedback{
 	public List<Employee> isEmpFeedbackExists(String emp, LocalDate date) {
 		// Metod will return employee if feedback exists for given date else null.
 		// A filter is used for feedback date in Employee class.
-		System.out.println(date);
 		Session session = feedbackFactoryBean.getCurrentSession();
 		CriteriaBuilder builder = session.getCriteriaBuilder();
 		CriteriaQuery<Employee> criteria = builder.createQuery(Employee.class);
@@ -127,29 +126,30 @@ public class EmployeeFeedback{
 		return employee;
 	}
 	
-	@Transactional("feedback")
-	public int addFeedback(Employee employee, LocalDate feedbackDate) {
+	//@Transactional("feedback")
+	public Feedback addFeedback(Employee employee, LocalDate feedbackDate) {
 		Feedback feedback = new Feedback();
 		feedback.setFeedbackPeriod(feedbackDate);
 		for(Integer i: QuestionBank.getInstance().getQuestionMap().keySet()){
 			feedback.getChoiceList().put(i,new EmployeeChoice(i, ""));
 		}
-		
+		feedback.setEmployee(employee);
+		feedback.setCreationDate(feedbackDate);
 		//SessionFactory factory = feedbackFactoryBean.getObject();
-		SessionFactory factory = feedbackFactoryBean;
+		/*SessionFactory factory = feedbackFactoryBean;
 		Session session = factory.getCurrentSession();
 		employee.getFeedbackList().add(feedback);
 		feedback.setEmployee(employee);
 		session.persist(feedback);
-		session.flush();
-		return feedback.getId();
+		session.flush();*/
+		return feedback;
 	}
 	
 	@Transactional("feedback")
-	public void saveEmpFeedback(Employee emp){
-		//SessionFactory factory = feedbackFactoryBean.getObject();
+	public void saveEmpFeedback(Employee emp,Feedback feedback){
 		SessionFactory factory = feedbackFactoryBean;
 		Session session = factory.getCurrentSession();
+		session.persist(feedback);
 		session.saveOrUpdate(emp);
 		session.flush();
 	}
@@ -173,11 +173,14 @@ public class EmployeeFeedback{
 	@Transactional("feedback")
 	public void updateEmpFeedback(Employee emp){
 		//SessionFactory factory = feedbackFactoryBean.getObject();
+		System.out.println("before delete.");
 		SessionFactory factory = feedbackFactoryBean;
 		Session session = factory.getCurrentSession();
-		Feedback feedback = emp.getFeedbackList().get(0);
-		feedback = session.get(Feedback.class,emp.getCurrentFeedbackId());
-		feedback.setChoiceList(emp.getFeedbackList().get(0).getChoiceList());
+		Feedback feedbackTemp = emp.getFeedbackList().get(0);
+		Feedback feedback = session.get(Feedback.class,emp.getCurrentFeedbackId());
+		System.out.println(feedbackTemp.getChoiceList());
+		System.out.println(feedbackTemp.getId());
+		System.out.println(feedback.getId());
 		session.flush();
 	}
 	

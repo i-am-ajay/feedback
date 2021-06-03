@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.conf.component.CurrentFeedbackDate;
 import com.conf.component.Employee;
+import com.conf.component.Feedback;
 import com.conf.component.Roles;
 import com.conf.component.User;
 import com.sgrh.dao.EmployeeFeedback;
@@ -40,15 +41,15 @@ public class EmployeeFeedbackService {
 		return feedbackExists;
 	}
 	
-	public Employee startEmployeeFeedback(String empCode, String dept, String designation, LocalDate feedbackDate) {
+	public Feedback startEmployeeFeedback(String empCode, String dept, String designation, LocalDate feedbackDate) {
 		Employee emp = empFeedback.createOrGetEmployee(empCode, dept, designation);
-		int id = empFeedback.addFeedback(emp, feedbackDate);
-		emp.setCurrentFeedbackId(id);
-		return emp;
+		Feedback feedback = empFeedback.addFeedback(emp, feedbackDate);
+		emp.setCurrentFeedbackId(feedback.getId());
+		return feedback;
 	}
 	
-	public void saveFeedback(Employee emp) {
-		empFeedback.saveEmpFeedback(emp);
+	public void saveFeedback(Employee emp,Feedback feedback) {
+		empFeedback.saveEmpFeedback(emp,feedback);
 	}
 	
 	public void updateFeeback(Employee emp) {
