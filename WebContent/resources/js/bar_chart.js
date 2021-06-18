@@ -71,11 +71,10 @@ const update_bar = data => {
     // remove present dom.
     rects.exit().remove();
     // update existing graphs
-   rects.attr('width',band_x.bandwidth)
-    	.attr('x',(d) => band_x(d.name))
-    	.attr('y',d => linear_bar(d.value))
-    	.attr('height',d => dimension_bar.height- linear_bar(d.value));
-    
+   rects
+    	.transition().duration(750).attr('y',d =>linear_bar(d.value))
+		.attr('height',d => dimension_bar.height - linear_bar(d.value))
+		//.attrTween('width',width_tween);
     // update 
  
     // enter new dom.

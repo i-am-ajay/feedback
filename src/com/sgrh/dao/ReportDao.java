@@ -20,7 +20,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.conf.component.CurrentFeedbackDate;
 import com.conf.component.Employee;
+import com.conf.component.Feedback;
 
 @Repository
 public class ReportDao {
@@ -29,20 +31,22 @@ public class ReportDao {
 	SessionFactory sessionFactory;
 	
 	@Transactional("feedback")
-	public List<String[]> pieChartDataDeptWise(String department) {
+	public List<String[]> pieChartDataDeptWise(String department, LocalDate feedbackDate) {
 		Session session = sessionFactory.getCurrentSession();
 		Query summaryData = session.createQuery("select c.answer, count(c.answer)from Employee e join e.feedbackList f join f.choiceList c"
-				+ " where e.department = :dept group by c.answer");
+				+ " where e.department = :dept and f.feedbackPeriod = :date group by c.answer");
 		summaryData.setParameter("dept", department);
+		summaryData.setParameter("date",feedbackDate);
 		List<String[]> l = summaryData.getResultList();
 		return l;
 	}
 	
 	@Transactional("feedback")
-	public List<String[]> pieChartDataAll() {
+	public List<String[]> pieChartDataAll(LocalDate feedbackDate) {
 		Session session = sessionFactory.getCurrentSession();
 		Query summaryData = session.createQuery("select c.answer, count(c.answer)from Employee e join e.feedbackList f join f.choiceList c"
-				+ " group by c.answer");
+				+ " WHERE f.feedbackPeriod = :date group by c.answer");
+		summaryData.setParameter("date", feedbackDate);
 		List<String[]> l = summaryData.getResultList();
 		return l;
 	}
@@ -93,13 +97,6 @@ public class ReportDao {
 		NativeQuery query = session.createNativeQuery("CALL user_feedback_summary(:sdate, :dept)");
 		query.setParameter("dept", department);
 		query.setParameter("sdate", date);
-		/*if(department != null && department.length() > 0){
-			query.setParameter("dept", department);
-			query.setParameter("date", date);
-		}
-		else {
-			query.setParameter("date", date);
-		}*/
 		return query.getResultList();
 	}
 	
@@ -166,5 +163,23 @@ public class ReportDao {
 					+"feedback_date = :date ) GROUP BY questionid, category";
 		}
 		return query;
+	}
+	
+	@Transactional("feedback")
+	public List<LocalDate> getFeedbackTimeLine(){
+		Session session = sessionFactory.getCurrentSession();
+		TypedQuery<LocalDate> feedbackTimeLine = session.createQuery("SELECT cfd.feedbackDate FROM CurrentFeedbackDate cfd ORDER BY cfd.feedbackDate DESC",
+				LocalDate.class);
+		
+		return feedbackTimeLine.getResultList();
+	}
+	
+	@Transactional("feedback")
+	public List<Feedback> getFeedbackandEmployee(String empCode, LocalDate date) {
+		Session session = sessionFactory.getCurrentSession();
+		TypedQuery<Feedback> feedbackEmployeeQuery = session.createQuery(" from Feedback f Where f.employee.EmpCode = :empcode and f.feedbackPeriod = :date",Feedback.class);
+		feedbackEmployeeQuery.setParameter("empcode", empCode);
+		feedbackEmployeeQuery.setParameter("date", date);
+		return feedbackEmployeeQuery.getResultList();
 	}
 }

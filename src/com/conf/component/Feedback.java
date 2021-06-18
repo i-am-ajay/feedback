@@ -48,9 +48,6 @@ public class Feedback {
 	@Column(name="feedback_date")
 	private LocalDate feedbackPeriod;
 	
-	@Column
-	private boolean status;
-	
 	@ManyToOne(cascade= {CascadeType.REFRESH})
 	@JoinColumn(name="emp_id")
 	private Employee employee;
@@ -92,17 +89,6 @@ public class Feedback {
 	public void setFeedbackPeriod(LocalDate feedbackPeriod) {
 		this.feedbackPeriod = feedbackPeriod;
 	}
-	
-	public boolean isStatus() {
-		return status;
-	}
-	public void setStatus(boolean status) {
-		this.status = status;
-	}
-	
-	
-	
-	
 	/*
 	public EmployeeChoice getCurrentQuestion() {
 		return this.currentQuestion;

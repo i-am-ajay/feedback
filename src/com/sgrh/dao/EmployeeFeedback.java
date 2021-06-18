@@ -173,14 +173,10 @@ public class EmployeeFeedback{
 	@Transactional("feedback")
 	public void updateEmpFeedback(Employee emp){
 		//SessionFactory factory = feedbackFactoryBean.getObject();
-		System.out.println("before delete.");
 		SessionFactory factory = feedbackFactoryBean;
 		Session session = factory.getCurrentSession();
 		Feedback feedbackTemp = emp.getFeedbackList().get(0);
 		Feedback feedback = session.get(Feedback.class,emp.getCurrentFeedbackId());
-		System.out.println(feedbackTemp.getChoiceList());
-		System.out.println(feedbackTemp.getId());
-		System.out.println(feedback.getId());
 		session.flush();
 	}
 	
@@ -240,18 +236,15 @@ public class EmployeeFeedback{
 		Query updateQuery = session.createQuery(updateString);
 		updateQuery.executeUpdate();
 		session.flush();
-	    System.out.println("Update Done");
 		String insertString = "INSERT INTO current_feedback (feedback_date, duration, end_date,isopen ) VALUES (?, ?, ?,true)";
 		NativeQuery insertQuery = session.createNativeQuery(insertString);
 		insertQuery.setParameter(1, startDate);
 		insertQuery.setParameter(2, duration);
 		insertQuery.setParameter(3, endDate);
-		System.out.println("Before Update");
 		int val = insertQuery.executeUpdate();
 		if(val > 0) {
 			return true;
 		}
-		System.out.println("After update");
 		return false;
 	}
 	

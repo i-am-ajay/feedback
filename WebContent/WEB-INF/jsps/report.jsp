@@ -24,7 +24,7 @@
 						<label for="dept" class="control-label font-weight-bold col-6 col-md-4 text-right my-auto">
 							Department<small class="text-danger">*</small></label>
 						<input list="deptList" class="form-control form-control-sm col-6 col-md-8"
-							id="dept" name="dept" placeholder="Department" />
+							id="dept" name="dept" placeholder="Department" value="${dept}"/>
 						<datalist id="deptList">
 							<c:forEach var="item" items="${deptList}">
 								<option><c:out value="${item}" /></option>
@@ -32,17 +32,22 @@
 						</datalist>
 					</div>
 					<div class="form-group row">
-						<label for="dept" class="control-label font-weight-bold col-6 col-md-4 text-right my-auto">
-							Start Date</label>
-						<input type="date" class="form-control form-control-sm col-6 col-md-8"
-							id="start" name="start_date"/>
+						<label for="feedback_timeline" class="control-label font-weight-bold text-right col-6 col-md-4 my-auto">
+							Feedback Duration</label>
+						<input list="feedbackList" class="form-control form-control-sm col-6 col-md-8 mt-2"
+							id="feedback_timeline" name="f_timeLine" placeholder="Feedback" value="${date}"/>
+						<datalist id="feedbackList">
+							<c:forEach var="feedback" items="${feedbackTimeLine}">
+								<option value="${feedback.value}"><c:out value="${feedback.key}"/></option>
+							</c:forEach>
+						</datalist>
 					</div>
-					<div class="form-group row">
+					<!--  <div class="form-group row">
 						<label for="dept" class="control-label font-weight-bold col-6 col-md-4 text-right my-auto">
 							End Date</label>
 						<input type="date" class="form-control form-control-sm col-6 col-md-8"
 							id="end" name="end_date"/>
-					</div>
+					</div>-->
 				    <a href="#" class="btn btn-primary btn-block w-75 mx-auto mt-2" id="btn">Show Graph</a>
 				    <input type="hidden" id="hidden" value="" />
 				  </div>
@@ -69,7 +74,7 @@
 				    	</div>
 						<div class="row">
 							<div class="col-sm-10"><h6>Feedback Submitted By</h6></div>
-				    		<div class="col-sm-2"><h6><span class="badge badge-success py-2  w-100" id="feed">14</span></h6></div>
+				    		<div class="col-sm-2"><h6 id="emp_fs"><span class="badge badge-success py-2  w-100" id="feed">14</span></h6></div>
 						</div>
 						<div class="row">
 							<div class="col-sm-10"><h6>Feedback Not Submitted By</h6></div>
@@ -87,24 +92,32 @@
 			</div>
 		</div>
 	</div>
-	<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+	<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<script src="https://d3js.org/d3.v5.min.js"></script>
-	<script src="//d3js.org/d3-scale-chromatic.v0.3.min.js"></script>
+	<script src="https://d3js.org/d3-scale-chromatic.v0.3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js"></script>
-    <script src="https://use.fontawesome.com/80a486f3d9.js"></script>
-   
+   <script src="https://use.fontawesome.com/80a486f3d9.js"></script> -->
+   	
+   <!-- Local Libraries -->
+   	<script src="${pageContext.request.contextPath}/static_resources/js/jquery-3.3.1.js"></script>
+	<script src="${pageContext.request.contextPath}/static_resources/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+	<script src="${pageContext.request.contextPath}/static_resources/js/Fontawesome.js"></script>
+	<script src="${pageContext.request.contextPath}/static_resources/js/popper.min.js"></script>
+	<script src="${pageContext.request.contextPath}/static_resources/js/d3/d3.min.js"></script>
+	<script src="${pageContext.request.contextPath}/static_resources/js/d3/d3-scale-chromatic.v0.3.min.js"></script>
+	<script src="${pageContext.request.contextPath}/static_resources/js/d3/d3-scale-legend.min.js"></script>
+   	
 	<script src="${pageContext.request.contextPath}/static_resources/js/index.js"></script>
 	<script src="${pageContext.request.contextPath}/static_resources/js/graph.js"></script>
 	<script src="${pageContext.request.contextPath}/static_resources/js/bar_chart.js"></script>
 	<script>
-		let pie_data = {};
 		function pie_input(){
 				$.ajax({
 					type: 'POST',
 					url:"${home}pie_chart",
-					data:"dept="+$("#dept").val(),
+					data:{dept:$("#dept").val(), date :$("#feedback_timeline").val()},
 					success:function(r,status,xrt){
 						update(JSON.parse(r));
 					}
@@ -114,7 +127,7 @@
 			$.ajax({
 				type: 'POST',
 				url: '${home}summary',
-				data: "dept="+$("#dept").val(),
+				data: {dept :$("#dept").val(), date :$("#feedback_timeline").val()},
 				success: function(result,status,xrt){
 					result = JSON.parse(result);
 					$("#total").text(result.total);
@@ -127,7 +140,7 @@
 			$.ajax({
 				type : 'POST',
 				url : '${home}barchart',
-				data : "dept="+$('#dept').val(),
+				data : {dept:$('#dept').val(),date :$("#feedback_timeline").val()},
 				success: function(result, status, xrt){
 					console.log(result);
 					update_bar(JSON.parse(result));
@@ -146,7 +159,16 @@
 					$("#home_icon").css({"cursor":"pointer"});
 				})
 			});
-		$("#btn").on("click",pie_input).on("click",emp_count).on("click",bar_chart);
+		$("#btn").on("click",pie_input).on("click",emp_count).on("click",bar_chart).on("click",
+				() =>{
+					$("#dept").val();
+					$("#feedback_timeline").val();
+				});
+		$("#emp_fs").on("click", () =>{
+			const dept = $("#dept").val();
+			const sDate = $("#feedback_timeline").val();
+			window.location.href = 'emplist_with_feedback?dept='+dept+'&date='+sDate;
+		});
 	</script>
 </body>
 </html>

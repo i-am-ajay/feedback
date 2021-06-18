@@ -2,6 +2,7 @@ package com.sgrh.service;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import com.ajay.others.QuestionBank;
 import com.conf.component.Employee;
+import com.conf.component.Feedback;
 import com.sgrh.dao.EmpPISDao;
 import com.sgrh.dao.ReportDao;
 
@@ -28,13 +30,13 @@ public class ReportService {
 	@Autowired
 	EmpPISDao pisDao;
 	// Department PIE chart
-	public Map<String,Long> pieChart(String department){
+	public Map<String,Long> pieChart(String department, LocalDate feedbackDate){
 		List<String[]> summaryList = null;
 		if(department != null && department !="" && department !=" " && department.length()>0) {
-			summaryList = reportDao.pieChartDataDeptWise(department);
+			summaryList = reportDao.pieChartDataDeptWise(department,feedbackDate);
 		}
 		else {
-			summaryList = reportDao.pieChartDataAll();
+			summaryList = reportDao.pieChartDataAll(feedbackDate);
 		}
 		Map<String,Long> map = null;
 		if(summaryList != null && summaryList.size()>0) {
@@ -66,6 +68,21 @@ public class ReportService {
 		return feedbackMap;
 	}
 	
+	// employee list who submitted feedback
+	public HashMap<String,String> employeeListFeedbackSubmitted(String department,LocalDate date) {
+		List<Object[]> empFeedbackList = reportDao.empList(department, date);
+		BigInteger integer = (BigInteger)reportDao.getQuestionCount();
+		int finalCount = integer.intValue();
+		int size = empFeedbackList.size();
+		HashMap<String,String> employeeMap = new HashMap<>();
+		
+		for(Object[] objArray : empFeedbackList) {
+			employeeMap.put((String)objArray[0],feedbackAnalysisEmployee(objArray, finalCount));
+		}
+		return employeeMap;
+	}
+	
+	
 	private void feedbackAnalysis(HashMap<String,Integer> map, Object[] obj, int finalCount) {
 		BigInteger positiveCount = (BigInteger)obj[1];
 		BigInteger neutralCount = (BigInteger)obj[2];
@@ -87,6 +104,33 @@ public class ReportService {
 			map.put("Neutral", map.get("Neutral")+1);
 		else if(neutralPercentage > 33)
 			map.put("Neutral", map.get("Neutral")+1);
+	}
+	
+	// Feedback categorization for single employee
+	private String feedbackAnalysisEmployee(Object[] obj, int finalCount) {
+		String feedback = null;
+		BigInteger positiveCount = (BigInteger)obj[1];
+		BigInteger neutralCount = (BigInteger)obj[2];
+		BigInteger negativeCount = (BigInteger)obj[3];
+		
+		float positivePercentage = ((float)positiveCount.intValue() / (float)finalCount) * 100;
+		float neutralPercentage  =((float)neutralCount.intValue() / (float)finalCount) * 100;
+		float negativePercentage = ((float)negativeCount.intValue() / (float) finalCount) * 100;
+		
+		if(positivePercentage >= 80 )
+			feedback = "Very Positive";
+		else if(positivePercentage >=60 && positivePercentage<80)
+			feedback = "Positive";
+		else if(negativePercentage >= 80)
+			feedback = "Very Negative";
+		else if(negativePercentage >= 60 && negativePercentage < 80)
+			feedback = "Negative";
+		else if((positivePercentage >=40 && positivePercentage <60) || (negativePercentage >= 40 && negativePercentage < 60))
+			feedback = "Neutral";
+		else if(neutralPercentage > 33)
+			feedback = "Neutral";
+		
+		return feedback;
 	}
 	
 	public Map<String,Long> convertUserInput(List<String[]> summaryList){
@@ -161,5 +205,24 @@ public class ReportService {
 		
 		
 		return questionFeedbackSummary;
+	}
+	
+	public Map<String,LocalDate> getFeedbackTimeLineService(){
+		List<LocalDate> listLocalDate = reportDao.getFeedbackTimeLine();
+		Map<String,LocalDate> mapDate = new LinkedHashMap<>();
+		for(LocalDate date : listLocalDate) {
+			String strDate = date.getMonth().name()+"-" + Integer.toString(date.getYear());
+			mapDate.put(strDate, date);
+		}
+		return mapDate;
+	}
+	
+	public Feedback getFeedbackAndEmployee(String empCode, LocalDate feedbackDate) {
+		Feedback feedback = null;
+		List<Feedback> feedbackList = reportDao.getFeedbackandEmployee(empCode, feedbackDate);
+		if(feedbackList != null && feedbackList.size() > 0) {
+			feedback = feedbackList.get(0);
+		}
+		return feedback;
 	}
 }

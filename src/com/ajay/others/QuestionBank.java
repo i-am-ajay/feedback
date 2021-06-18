@@ -55,7 +55,7 @@ public class QuestionBank {
 		createQuestion(17,"The organization is a good place to work in terms of latest systems and practices.", new String[]{"Agreed","Some What Agree","Don't Agree"});
 		createQuestion(18,"I am potimistic about my future success in this organization.", new String[]{"Agreed","Some What Agree","Don't Agree"});
 		createQuestion(19,"My compensation matches with my job responsibilities.", new String[]{"Agreed","Some What Agree","Don't Agree"});
-		createQuestion(20,"Mycompensation matches with similarly placed hospitals.", new String[]{"Agreed","Some What Agree","Don't Agree"});
+		createQuestion(20,"My compensation matches with similarly placed hospitals.", new String[]{"Agreed","Some What Agree","Don't Agree"});
 		createQuestion(21,"My job responsibilities are reasonable enough for me to manage.", new String[]{"Agreed","Some What Agree","Don't Agree"});
 		createQuestion(22,"My job gives me a sense of personal accomplishment.", new String[]{"Agreed","Some What Agree","Don't Agree"});
 		createQuestion(23,"I get due recognition of my contributions.", new String[]{"Agreed","Some What Agree","Don't Agree"});

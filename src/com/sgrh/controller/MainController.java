@@ -78,8 +78,6 @@ public class MainController{
 				eFS.generatedQuestions();
 				Feedback feedback = eFS.startEmployeeFeedback(empInit.getEmpCode(), empInit.getDepartment(), empInit.getDesignation(), this.feedbackDate);
 				//eFS.saveFeedback(empGlobal);
-				System.out.println(feedback.getChoiceList().size());
-				System.out.println(feedback.getCreationDate());
 				empGlobal = empInit;
 				model.addAttribute("emp", empGlobal);
 				model.addAttribute("feed_obj",feedback);

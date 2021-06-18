@@ -68,7 +68,11 @@ const update = data => {
     // remove present dom.
     paths.exit().remove();
     // update present dom.
-    paths.attr('d',archPath).transition();
+    paths.attr('d',archPath)
+    	.attr('stroke-width',3)
+    	.attr('fill',d => ordinal(d.data.name))
+    	.transition().duration(750)
+    	.attrTween("d",arcTweens);
  
     // enter new dom.
     paths.enter().append('path')
